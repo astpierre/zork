@@ -1,7 +1,3 @@
-//
-// Created by asaintp on 1/16/19.
-//
-
 #ifndef ZORK_PLAYER_H
 #define ZORK_PLAYER_H
 
@@ -10,24 +6,33 @@
 
 class Player {
 public:
-    Player(const std::string &name);
+    /* Public data members and function members are like
+     * an API for the instance of the class */
 
+    // Destructor
+    virtual ~Player();
+
+    // Constructor
+    Player(const std::string &name,int score);
+
+    // Getters
     int getScore() const;
-
-    void setScore(int score);
-
     const std::string &getName() const;
 
-    void setName(const std::string &name);
+    // Setters
+    void plusOneScore();
+    void changeName(const std::string &name);
 
+    // Misc methods
     bool isWinner() const;
 
-    void setWinner(bool winner);
-
 private:
+    /* Private data members and function members are not
+     * accessible by users of an instance of the class */
+
+    // Data members
     int score = 0;
     std::string name;
-    bool winner = false;
 };
 
 #endif //ZORK_PLAYER_H

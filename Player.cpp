@@ -1,31 +1,25 @@
-//
-// Created by asaintp on 1/16/19.
-//
-
+#include <tuple>
 #include "Player.h"
 
-int Player::getScore() const {
-    return score;
-}
+// Getters
+const std::string &Player::getName() const { return name; }
+int Player::getScore() const { return score; }
 
-void Player::setScore(int score) {
-    Player::score = score;
-}
+// Setters
+void Player::changeName(const std::string &name) { Player::name = name; }
+void Player::plusOneScore() { Player::score += 1; }
 
-const std::string &Player::getName() const {
-    return name;
-}
+// Constructor
+Player::Player(const std::string &name, int score) : name(name),score(score) {}
 
-void Player::setName(const std::string &name) {
-    Player::name = name;
-}
+// Destructor
+Player::~Player() {}
 
+// Misc methods
 bool Player::isWinner() const {
-    return winner;
+    if(score >= 10){
+        return true;
+    } else {
+        return false;
+    }
 }
-
-void Player::setWinner(bool winner) {
-    Player::winner = winner;
-}
-
-Player::Player(const std::string &name) : name(name) {}
