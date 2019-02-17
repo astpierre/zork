@@ -1,7 +1,7 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 #include <iostream>
-#include <vector> 
+#include <vector>
 #include "Trigger.h"
 
 class Component {
