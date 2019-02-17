@@ -2,9 +2,9 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include "src/lib/Trigger.h"
-#include "src/lib/Component.h"
-#include "src/lib/tinyxml2.h"
+#include "Trigger.h"
+#include "Component.h"
+#include "tinyxml2.h"
 
 // Macro to check XML parsing
 // Forward declaration of functions used by the main function
@@ -14,21 +14,15 @@ static std::vector<std::string> getTextList(tinyxml2::XMLElement *_element);
 int main(void) {
     /* GAME SETUP */
     // Open XML file
-    // open a file in read mode.
     tinyxml2::XMLDocument doc;
     doc.LoadFile("test.xml");
+
     // Parse XML file
     tinyxml2::XMLNode * pRoot = doc.FirstChild();
-
     if (pRoot == nullptr) std::cout << "ERROR\n";
-    //tinyxml2::XMLElement * pElement = pRoot->FirstChildElement("creature");
-
-    //const char * creatureNamePtr = nullptr;
-    //std::string creatureName = getElementText(pElement->FirstChildElement("name"));
-    //creatureNamePtr = pElement->Attribute("name");
-    //if (creatureNamePtr == nullptr) return XML_ERROR_PARSING_ATTRIBUTE;
-    //std::string creatureName = creatureNamePtr;
-	//std::cout << " Name of creature: " << creatureName << std::endl;
+    tinyxml2::XMLElement * pElement = pRoot->FirstChildElement("creature");
+    std::string creatureName = getElementText(pElement->FirstChildElement("name"));
+	std::cout << " Name of creature: " << creatureName << std::endl;
 
     // Create all objects (all roooms and items)
     // Populate all objects
