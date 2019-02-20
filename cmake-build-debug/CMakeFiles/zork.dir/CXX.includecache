@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cygdrive/c/Users/Jeff/Documents/GitHub/zork/Player.cpp
+tuple
+-
+Player.h
+/cygdrive/c/Users/Jeff/Documents/GitHub/zork/Player.h
+
+/cygdrive/c/Users/Jeff/Documents/GitHub/zork/Player.h
+string
+-
+iostream
+-
+
+/cygdrive/c/Users/Jeff/Documents/GitHub/zork/main.cpp
+Player.h
+/cygdrive/c/Users/Jeff/Documents/GitHub/zork/Player.h
+iostream
+-
+ctime
+-
+rapidxml.hpp
+/cygdrive/c/Users/Jeff/Documents/GitHub/zork/rapidxml.hpp
+
+/cygdrive/c/Users/Jeff/Documents/GitHub/zork/rapidxml.hpp
+cstdlib
+-
+cassert
+-
+new
+-
+exception
+-
+

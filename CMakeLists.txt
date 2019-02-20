@@ -3,4 +3,4 @@ project(zork)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(zork main.cpp Player.cpp Player.h)
+add_executable(zork main.cpp Player.cpp Player.h rapidxml.hpp rapidxml_iterators.hpp)

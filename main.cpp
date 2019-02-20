@@ -1,6 +1,8 @@
 #include "Player.h"
 #include <iostream>
 #include <ctime>
+#include "rapidxml.hpp"
+using namespace rapidxml;
 
 // Function prototypes
 std::string truth(int binaryVal);
