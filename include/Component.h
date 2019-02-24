@@ -2,6 +2,7 @@
 #define COMPONENT_H
 #include <iostream>
 #include <vector>
+#include "tinyxml2.h"
 #include "Trigger.h"
 
 class Component {
@@ -16,6 +17,8 @@ public:
     virtual void setName( std::string );
     virtual void setStatus( std::string );
     virtual void setDescription( std::string );
+    virtual void addTrigger( Trigger * );
+    virtual void showTriggers( );
 
 private:
     std::string name = "";

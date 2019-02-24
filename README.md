@@ -13,5 +13,13 @@
 4. ```ninja``` to build and run our executable from the build folder
 5. ```./zork_test``` to execute ```main.cpp```
 
+## Screenshots  
+![Screenshot](notes/output.png)
+![Screenshot](notes/main.png)
+
+
+## Resources
+* https://shilohjames.wordpress.com/2014/04/27/tinyxml2-tutorial/  
+
 
 ### End README.md

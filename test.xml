@@ -102,7 +102,7 @@
         </trigger>
     </container>
     <creature>
-        <name>gnome</name>
+        <name>Prof Midkiff</name>
         <vulnerability>explosive</vulnerability>
         <attack>
             <condition>
