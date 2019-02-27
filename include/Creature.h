@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "Component.h"
+#include "Attack.h"
 #include "tinyxml2.h"
 using namespace tinyxml2;
 
@@ -14,7 +15,6 @@ public:
 
     void setVulnerability( std::string );
     std::string getVulnerability( );
-
 
 private:
     std::string vulnerability = "";

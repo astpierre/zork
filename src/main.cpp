@@ -12,7 +12,7 @@ using namespace tinyxml2;
 #define XMLCHECK(ptr) (nullptr==ptr)
 
 // Forward declaration of functions used by the main function
-static std::string getElementText(tinyxml2::XMLElement *_element);
+static std::string getElementText(XMLElement *_element);
 
 int main(void) {
     /* GAME SETUP */
@@ -26,13 +26,15 @@ int main(void) {
 
     // Create all objects (all roooms and items)
     // Populate all objects
+
+    // Grab a creature element from the XML file
     XMLElement * pElement = pRoot->FirstChildElement("creature");
     if(XMLCHECK(pRoot)) std::cout << "ERROR\n"; // check fail
+    // Create creature
     Creature * creature = new Creature(pElement);
-
-    std::cout << "Creating a new creature object" << '\n';
     std::cout << "Creature name: " << creature->getName() << std::endl;
     std::cout << "Creature vulnerability: " << creature->getVulnerability() << std::endl;
+    creature->showTriggers();
 
     /* RUN GAME */
     // Prompt for command
