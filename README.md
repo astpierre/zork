@@ -14,12 +14,13 @@
 5. ```./zork_test``` to execute ```main.cpp```
 
 ## Screenshots  
-![Screenshot](notes/output.png)
+![Screenshot](notes/constructor_game.png)
 ![Screenshot](notes/main.png)
 
 
 ## Resources
 * https://shilohjames.wordpress.com/2014/04/27/tinyxml2-tutorial/  
+* http://brianandstuff.com/2017/07/24/easy-xml-parsing-in-c-with-tinyxml2/  
 
 
 ### End README.md

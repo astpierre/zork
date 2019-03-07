@@ -7,11 +7,15 @@ add_library(zorklib
     include/Component.h
     include/Trigger.h
     include/Creature.h
+    include/Item.h
+    include/Game.h
     include/tinyxml2.h
     src/tinyxml2.cpp
     src/Component.cpp
     src/Trigger.cpp
     src/Creature.cpp
+    src/Item.cpp
+    src/Game.cpp
 )
 
 target_include_directories(

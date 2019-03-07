@@ -5,36 +5,16 @@
 #include "Trigger.h"
 #include "Creature.h"
 #include "Component.h"
+#include "Game.h"
+#include "Item.h"
 #include "tinyxml2.h"
 using namespace tinyxml2;
 
-// Macro to check XML parsing
-#define XMLCHECK(ptr) (nullptr==ptr)
-
-// Forward declaration of functions used by the main function
-static std::string getElementText(XMLElement *_element);
-
+// Main entrypoint
 int main(void) {
     /* GAME SETUP */
-    // Open XML file
-    XMLDocument doc;
-    doc.LoadFile("test.xml");
-
-    // Parse XML file
-    XMLNode * pRoot = doc.FirstChild(); // pRoot == <map>
-    if(XMLCHECK(pRoot)) std::cout << "ERROR\n"; // check fail
-
-    // Create all objects (all roooms and items)
-    // Populate all objects
-
-    // Grab a creature element from the XML file
-    XMLElement * pElement = pRoot->FirstChildElement("creature");
-    if(XMLCHECK(pRoot)) std::cout << "ERROR\n"; // check fail
-    // Create creature
-    Creature * creature = new Creature(pElement);
-    std::cout << "Creature name: " << creature->getName() << std::endl;
-    std::cout << "Creature vulnerability: " << creature->getVulnerability() << std::endl;
-    creature->showTriggers();
+    Game * game = new Game("test.xml"); // Construct the game
+    game->ShowObjects( ); // Show results after construction
 
     /* RUN GAME */
     // Prompt for command
@@ -44,13 +24,4 @@ int main(void) {
 
     /* EXIT */
     return EXIT_SUCCESS;
-}
-
-// This is a simple utility function to get a value as long as the node is not null
-static std::string getElementText(XMLElement *_element) {
-    std::string value;
-    if(_element != NULL) {
-        value = _element->GetText();
-    }
-    return value;
 }

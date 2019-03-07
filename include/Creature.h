@@ -10,14 +10,13 @@ using namespace tinyxml2;
 
 class Creature: public Component {
 public:
-    Creature( XMLElement * creatureElement );
+    Creature( XMLElement * );
     virtual ~Creature( );
 
-    void setVulnerability( std::string );
-    std::string getVulnerability( );
+    std::vector<std::string> getVulnerabilities( );
 
 private:
-    std::string vulnerability = "";
+    std::vector<std::string> vulnerabilities;
 };
 
 #endif /* CREATURE_H */

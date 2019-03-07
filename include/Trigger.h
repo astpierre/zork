@@ -19,6 +19,7 @@ public:
 
     virtual void setCommand( std::string );
     virtual void setReady( bool );
+    virtual void setPrint( std::string );
     virtual void changeMode( std::string );
     virtual void incrTimesUsed( );
 
