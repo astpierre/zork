@@ -111,71 +111,246 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named zork
+# Target rules for targets named include
 
 # Build rule for target.
-zork: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 zork
-.PHONY : zork
+include: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 include
+.PHONY : include
 
 # fast build rule for target.
-zork/fast:
-	$(MAKE) -f CMakeFiles/zork.dir/build.make CMakeFiles/zork.dir/build
-.PHONY : zork/fast
+include/fast:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/build
+.PHONY : include/fast
 
-Player.o: Player.cpp.o
+#=============================================================================
+# Target rules for targets named zork_test
 
-.PHONY : Player.o
+# Build rule for target.
+zork_test: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 zork_test
+.PHONY : zork_test
 
-# target to build an object file
-Player.cpp.o:
-	$(MAKE) -f CMakeFiles/zork.dir/build.make CMakeFiles/zork.dir/Player.cpp.o
-.PHONY : Player.cpp.o
+# fast build rule for target.
+zork_test/fast:
+	$(MAKE) -f CMakeFiles/zork_test.dir/build.make CMakeFiles/zork_test.dir/build
+.PHONY : zork_test/fast
 
-Player.i: Player.cpp.i
+src/Component.o: src/Component.cpp.o
 
-.PHONY : Player.i
-
-# target to preprocess a source file
-Player.cpp.i:
-	$(MAKE) -f CMakeFiles/zork.dir/build.make CMakeFiles/zork.dir/Player.cpp.i
-.PHONY : Player.cpp.i
-
-Player.s: Player.cpp.s
-
-.PHONY : Player.s
-
-# target to generate assembly for a file
-Player.cpp.s:
-	$(MAKE) -f CMakeFiles/zork.dir/build.make CMakeFiles/zork.dir/Player.cpp.s
-.PHONY : Player.cpp.s
-
-main.o: main.cpp.o
-
-.PHONY : main.o
+.PHONY : src/Component.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) -f CMakeFiles/zork.dir/build.make CMakeFiles/zork.dir/main.cpp.o
-.PHONY : main.cpp.o
+src/Component.cpp.o:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/Component.cpp.o
+.PHONY : src/Component.cpp.o
 
-main.i: main.cpp.i
+src/Component.i: src/Component.cpp.i
 
-.PHONY : main.i
+.PHONY : src/Component.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles/zork.dir/build.make CMakeFiles/zork.dir/main.cpp.i
-.PHONY : main.cpp.i
+src/Component.cpp.i:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/Component.cpp.i
+.PHONY : src/Component.cpp.i
 
-main.s: main.cpp.s
+src/Component.s: src/Component.cpp.s
 
-.PHONY : main.s
+.PHONY : src/Component.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles/zork.dir/build.make CMakeFiles/zork.dir/main.cpp.s
-.PHONY : main.cpp.s
+src/Component.cpp.s:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/Component.cpp.s
+.PHONY : src/Component.cpp.s
+
+src/Container.o: src/Container.cpp.o
+
+.PHONY : src/Container.o
+
+# target to build an object file
+src/Container.cpp.o:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/Container.cpp.o
+.PHONY : src/Container.cpp.o
+
+src/Container.i: src/Container.cpp.i
+
+.PHONY : src/Container.i
+
+# target to preprocess a source file
+src/Container.cpp.i:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/Container.cpp.i
+.PHONY : src/Container.cpp.i
+
+src/Container.s: src/Container.cpp.s
+
+.PHONY : src/Container.s
+
+# target to generate assembly for a file
+src/Container.cpp.s:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/Container.cpp.s
+.PHONY : src/Container.cpp.s
+
+src/Creature.o: src/Creature.cpp.o
+
+.PHONY : src/Creature.o
+
+# target to build an object file
+src/Creature.cpp.o:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/Creature.cpp.o
+.PHONY : src/Creature.cpp.o
+
+src/Creature.i: src/Creature.cpp.i
+
+.PHONY : src/Creature.i
+
+# target to preprocess a source file
+src/Creature.cpp.i:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/Creature.cpp.i
+.PHONY : src/Creature.cpp.i
+
+src/Creature.s: src/Creature.cpp.s
+
+.PHONY : src/Creature.s
+
+# target to generate assembly for a file
+src/Creature.cpp.s:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/Creature.cpp.s
+.PHONY : src/Creature.cpp.s
+
+src/Item.o: src/Item.cpp.o
+
+.PHONY : src/Item.o
+
+# target to build an object file
+src/Item.cpp.o:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/Item.cpp.o
+.PHONY : src/Item.cpp.o
+
+src/Item.i: src/Item.cpp.i
+
+.PHONY : src/Item.i
+
+# target to preprocess a source file
+src/Item.cpp.i:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/Item.cpp.i
+.PHONY : src/Item.cpp.i
+
+src/Item.s: src/Item.cpp.s
+
+.PHONY : src/Item.s
+
+# target to generate assembly for a file
+src/Item.cpp.s:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/Item.cpp.s
+.PHONY : src/Item.cpp.s
+
+src/Trigger.o: src/Trigger.cpp.o
+
+.PHONY : src/Trigger.o
+
+# target to build an object file
+src/Trigger.cpp.o:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/Trigger.cpp.o
+.PHONY : src/Trigger.cpp.o
+
+src/Trigger.i: src/Trigger.cpp.i
+
+.PHONY : src/Trigger.i
+
+# target to preprocess a source file
+src/Trigger.cpp.i:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/Trigger.cpp.i
+.PHONY : src/Trigger.cpp.i
+
+src/Trigger.s: src/Trigger.cpp.s
+
+.PHONY : src/Trigger.s
+
+# target to generate assembly for a file
+src/Trigger.cpp.s:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/Trigger.cpp.s
+.PHONY : src/Trigger.cpp.s
+
+src/Turnon.o: src/Turnon.cpp.o
+
+.PHONY : src/Turnon.o
+
+# target to build an object file
+src/Turnon.cpp.o:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/Turnon.cpp.o
+.PHONY : src/Turnon.cpp.o
+
+src/Turnon.i: src/Turnon.cpp.i
+
+.PHONY : src/Turnon.i
+
+# target to preprocess a source file
+src/Turnon.cpp.i:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/Turnon.cpp.i
+.PHONY : src/Turnon.cpp.i
+
+src/Turnon.s: src/Turnon.cpp.s
+
+.PHONY : src/Turnon.s
+
+# target to generate assembly for a file
+src/Turnon.cpp.s:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/Turnon.cpp.s
+.PHONY : src/Turnon.cpp.s
+
+src/main.o: src/main.cpp.o
+
+.PHONY : src/main.o
+
+# target to build an object file
+src/main.cpp.o:
+	$(MAKE) -f CMakeFiles/zork_test.dir/build.make CMakeFiles/zork_test.dir/src/main.cpp.o
+.PHONY : src/main.cpp.o
+
+src/main.i: src/main.cpp.i
+
+.PHONY : src/main.i
+
+# target to preprocess a source file
+src/main.cpp.i:
+	$(MAKE) -f CMakeFiles/zork_test.dir/build.make CMakeFiles/zork_test.dir/src/main.cpp.i
+.PHONY : src/main.cpp.i
+
+src/main.s: src/main.cpp.s
+
+.PHONY : src/main.s
+
+# target to generate assembly for a file
+src/main.cpp.s:
+	$(MAKE) -f CMakeFiles/zork_test.dir/build.make CMakeFiles/zork_test.dir/src/main.cpp.s
+.PHONY : src/main.cpp.s
+
+src/tinyxml2.o: src/tinyxml2.cpp.o
+
+.PHONY : src/tinyxml2.o
+
+# target to build an object file
+src/tinyxml2.cpp.o:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/tinyxml2.cpp.o
+.PHONY : src/tinyxml2.cpp.o
+
+src/tinyxml2.i: src/tinyxml2.cpp.i
+
+.PHONY : src/tinyxml2.i
+
+# target to preprocess a source file
+src/tinyxml2.cpp.i:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/tinyxml2.cpp.i
+.PHONY : src/tinyxml2.cpp.i
+
+src/tinyxml2.s: src/tinyxml2.cpp.s
+
+.PHONY : src/tinyxml2.s
+
+# target to generate assembly for a file
+src/tinyxml2.cpp.s:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/src/tinyxml2.cpp.s
+.PHONY : src/tinyxml2.cpp.s
 
 # Help Target
 help:
@@ -184,14 +359,33 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... zork"
+	@echo "... include"
 	@echo "... edit_cache"
-	@echo "... Player.o"
-	@echo "... Player.i"
-	@echo "... Player.s"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... zork_test"
+	@echo "... src/Component.o"
+	@echo "... src/Component.i"
+	@echo "... src/Component.s"
+	@echo "... src/Container.o"
+	@echo "... src/Container.i"
+	@echo "... src/Container.s"
+	@echo "... src/Creature.o"
+	@echo "... src/Creature.i"
+	@echo "... src/Creature.s"
+	@echo "... src/Item.o"
+	@echo "... src/Item.i"
+	@echo "... src/Item.s"
+	@echo "... src/Trigger.o"
+	@echo "... src/Trigger.i"
+	@echo "... src/Trigger.s"
+	@echo "... src/Turnon.o"
+	@echo "... src/Turnon.i"
+	@echo "... src/Turnon.s"
+	@echo "... src/main.o"
+	@echo "... src/main.i"
+	@echo "... src/main.s"
+	@echo "... src/tinyxml2.o"
+	@echo "... src/tinyxml2.i"
+	@echo "... src/tinyxml2.s"
 .PHONY : help
 
 

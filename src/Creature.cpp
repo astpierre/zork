@@ -1,6 +1,6 @@
-#include "Creature.h"
-#include "Trigger.h"
-#include "tinyxml2.h"
+#include "../include/Creature.h"
+#include "../include/Trigger.h"
+#include "../include/tinyxml2.h"
 #include <iostream>
 #include <string>
 

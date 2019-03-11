@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 #include <iterator> // for iterators
-#include "Component.h"
+#include "../include/Component.h"
 
 Component::Component( ) { }
 Component::~Component( ) { }

@@ -65,39 +65,76 @@ CMAKE_SOURCE_DIR = /cygdrive/c/Users/Jeff/Documents/GitHub/zork
 CMAKE_BINARY_DIR = /cygdrive/c/Users/Jeff/Documents/GitHub/zork/cmake-build-debug
 
 #=============================================================================
-# Target rules for target CMakeFiles/zork.dir
+# Target rules for target CMakeFiles/include.dir
 
 # All Build rule for target.
-CMakeFiles/zork.dir/all:
-	$(MAKE) -f CMakeFiles/zork.dir/build.make CMakeFiles/zork.dir/depend
-	$(MAKE) -f CMakeFiles/zork.dir/build.make CMakeFiles/zork.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/cygdrive/c/Users/Jeff/Documents/GitHub/zork/cmake-build-debug/CMakeFiles --progress-num=1,2,3 "Built target zork"
-.PHONY : CMakeFiles/zork.dir/all
+CMakeFiles/include.dir/all:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/depend
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/cygdrive/c/Users/Jeff/Documents/GitHub/zork/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4,5,6,7,8 "Built target include"
+.PHONY : CMakeFiles/include.dir/all
 
 # Include target in all.
-all: CMakeFiles/zork.dir/all
+all: CMakeFiles/include.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/zork.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/Jeff/Documents/GitHub/zork/cmake-build-debug/CMakeFiles 3
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/zork.dir/all
+CMakeFiles/include.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/Jeff/Documents/GitHub/zork/cmake-build-debug/CMakeFiles 8
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/include.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/Jeff/Documents/GitHub/zork/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/zork.dir/rule
+.PHONY : CMakeFiles/include.dir/rule
 
 # Convenience name for target.
-zork: CMakeFiles/zork.dir/rule
+include: CMakeFiles/include.dir/rule
 
-.PHONY : zork
-
-# clean rule for target.
-CMakeFiles/zork.dir/clean:
-	$(MAKE) -f CMakeFiles/zork.dir/build.make CMakeFiles/zork.dir/clean
-.PHONY : CMakeFiles/zork.dir/clean
+.PHONY : include
 
 # clean rule for target.
-clean: CMakeFiles/zork.dir/clean
+CMakeFiles/include.dir/clean:
+	$(MAKE) -f CMakeFiles/include.dir/build.make CMakeFiles/include.dir/clean
+.PHONY : CMakeFiles/include.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/include.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/zork_test.dir
+
+# All Build rule for target.
+CMakeFiles/zork_test.dir/all:
+	$(MAKE) -f CMakeFiles/zork_test.dir/build.make CMakeFiles/zork_test.dir/depend
+	$(MAKE) -f CMakeFiles/zork_test.dir/build.make CMakeFiles/zork_test.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/cygdrive/c/Users/Jeff/Documents/GitHub/zork/cmake-build-debug/CMakeFiles --progress-num=9,10 "Built target zork_test"
+.PHONY : CMakeFiles/zork_test.dir/all
+
+# Include target in all.
+all: CMakeFiles/zork_test.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/zork_test.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/Jeff/Documents/GitHub/zork/cmake-build-debug/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/zork_test.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /cygdrive/c/Users/Jeff/Documents/GitHub/zork/cmake-build-debug/CMakeFiles 0
+.PHONY : CMakeFiles/zork_test.dir/rule
+
+# Convenience name for target.
+zork_test: CMakeFiles/zork_test.dir/rule
+
+.PHONY : zork_test
+
+# clean rule for target.
+CMakeFiles/zork_test.dir/clean:
+	$(MAKE) -f CMakeFiles/zork_test.dir/build.make CMakeFiles/zork_test.dir/clean
+.PHONY : CMakeFiles/zork_test.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/zork_test.dir/clean
 
 .PHONY : clean
 

@@ -49,5 +49,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/zork.dir/DependInfo.cmake"
+  "CMakeFiles/include.dir/DependInfo.cmake"
+  "CMakeFiles/zork_test.dir/DependInfo.cmake"
   )

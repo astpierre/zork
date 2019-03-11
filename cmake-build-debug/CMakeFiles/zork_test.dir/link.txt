@@ -1,0 +1,1 @@
+/usr/bin/c++.exe -g  -Wl,--enable-auto-import CMakeFiles/zork_test.dir/src/main.cpp.o  -o zork_test.exe -Wl,--out-implib,libzork_test.dll.a -Wl,--major-image-version,0,--minor-image-version,0 -lzorklib 

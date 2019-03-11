@@ -7,8 +7,12 @@
 #include <vector>
 #include <string>
 #include "TurnOn.h"
+#include "Component.h"
 class Item : public Component {
 public:
+    void setWriting(std::string writing);
+    std::string getWriting();
+private:
     std::string writing;
     TurnOn * turnOn;
 

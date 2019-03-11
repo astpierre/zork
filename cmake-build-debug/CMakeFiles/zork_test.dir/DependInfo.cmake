@@ -4,8 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/cygdrive/c/Users/Jeff/Documents/GitHub/zork/Player.cpp" "/cygdrive/c/Users/Jeff/Documents/GitHub/zork/cmake-build-debug/CMakeFiles/zork.dir/Player.cpp.o"
-  "/cygdrive/c/Users/Jeff/Documents/GitHub/zork/main.cpp" "/cygdrive/c/Users/Jeff/Documents/GitHub/zork/cmake-build-debug/CMakeFiles/zork.dir/main.cpp.o"
+  "/cygdrive/c/Users/Jeff/Documents/GitHub/zork/src/main.cpp" "/cygdrive/c/Users/Jeff/Documents/GitHub/zork/cmake-build-debug/CMakeFiles/zork_test.dir/src/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

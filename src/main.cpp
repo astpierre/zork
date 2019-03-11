@@ -2,10 +2,10 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include "Trigger.h"
-#include "Creature.h"
-#include "Component.h"
-#include "tinyxml2.h"
+#include "../include/Trigger.h"
+#include "../include/Creature.h"
+#include "../include/Component.h"
+#include "../include/tinyxml2.h"
 using namespace tinyxml2;
 
 // Macro to check XML parsing

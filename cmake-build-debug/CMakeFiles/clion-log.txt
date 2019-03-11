@@ -1,1 +1,4 @@
-CMakeLists.txt not found in C:\Users\Jeff\Documents\GitHub\zork Select CMakeLists.txt file...
+C:\Users\Jeff\.CLion2018.3\system\cygwin_cmake\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /cygdrive/c/Users/Jeff/Documents/GitHub/zork
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /cygdrive/c/Users/Jeff/Documents/GitHub/zork/cmake-build-debug

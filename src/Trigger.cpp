@@ -1,5 +1,5 @@
-#include "Trigger.h"
-#include "tinyxml2.h"
+#include "../include/Trigger.h"
+#include "../include/tinyxml2.h"
 #include <iostream>
 #include <string>
 

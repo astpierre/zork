@@ -8,6 +8,13 @@
 #include <string>
 class TurnOn {
 public:
+    virtual ~TurnOn();
+    void setPrint(std::string print);
+    std::string getPrint();
+    void setAction(std::string action);
+    std::string getAction();
+
+private:
     std::string print;
     std::string action;
 };
