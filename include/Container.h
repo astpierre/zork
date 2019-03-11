@@ -4,5 +4,8 @@
 
 #ifndef ZORK_CONTAINER_H
 #define ZORK_CONTAINER_H
+class Container {
+
+};
 
 #endif //ZORK_CONTAINER_H

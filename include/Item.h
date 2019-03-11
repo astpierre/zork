@@ -6,8 +6,11 @@
 #define ZORK_ITEM_H
 #include <vector>
 #include <string>
+#include "TurnOn.h"
 class Item : public Component {
+public:
     std::string writing;
+    TurnOn * turnOn;
 
 };
 #endif //ZORK_ITEM_H
