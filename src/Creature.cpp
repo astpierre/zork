@@ -21,7 +21,7 @@ Creature::Creature( XMLElement * creatureElement ) {
         pVulnerability = pVulnerability->NextSiblingElement("vulnerability");
     }
 
-    /* TODO: Attack object (PASS XMLElement to attack constructor) */
+    /* TODO: Attack object (Pass XMLElement to attack constructor) */
 
     /* Creature triggers */
     XMLElement * pTrigger = nullptr;

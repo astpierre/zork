@@ -4,6 +4,7 @@
 #include <fstream>
 #include <iterator>
 #include "Component.h"
+#include "Container.h"
 #include "Trigger.h"
 #include "Item.h"
 #include "Game.h"
@@ -33,7 +34,8 @@ Game::Game( const char * xmlfile ) { /* Constructor */
     XMLElement * pRoom = nullptr;
     pRoom = pRoot->FirstChildElement("room");
     while(pRoom) {
-        this->rooms.push_back(pRoom->FirstChildElement("name")->GetText());
+        Room * r = new Room(pRoom);
+        this->rooms.push_back(r);
         pRoom = pRoom->NextSiblingElement("room");
     }
 
@@ -41,7 +43,6 @@ Game::Game( const char * xmlfile ) { /* Constructor */
     XMLElement * pCreature = nullptr;
     pCreature = pRoot->FirstChildElement("creature");
     while(pCreature) {
-        //creatures.push_back(pCreature->FirstChildElement("name")->GetText());
         Creature * c = new Creature(pCreature);
         this->creatures.push_back(c);
         pCreature = pCreature->NextSiblingElement("creature");
@@ -51,7 +52,6 @@ Game::Game( const char * xmlfile ) { /* Constructor */
     XMLElement * pItem = nullptr;
     pItem = pRoot->FirstChildElement("item");
     while(pItem) {
-        //items.push_back(pItem->FirstChildElement("name")->GetText());
         Item * item = new Item(pItem);
         this->items.push_back(item);
         pItem = pItem->NextSiblingElement("item");
@@ -61,15 +61,38 @@ Game::Game( const char * xmlfile ) { /* Constructor */
     XMLElement * pContainer = nullptr;
     pContainer = pRoot->FirstChildElement("container");
     while(pContainer) {
-        this->containers.push_back(pContainer->FirstChildElement("name")->GetText());
+        Container * container = new Container(pContainer);
+        this->containers.push_back(container);
         pContainer = pContainer->NextSiblingElement("container");
     }
 
 }
 
 void Game::ShowObjects( ) {
+    std::cout << "Displaying game components: "<<std::endl;
     for(auto i : this->rooms) {
-        std::cout << "Room name: "<< i << std::endl;
+        std::cout << "Room name: "<< i->getName( ) << std::endl;
+        std::cout << "Room status: "<< i->getStatus( ) << std::endl;
+        std::cout << "Room description: "<< i->getDescription( ) << std::endl;
+        std::vector<std::string> iList = i->getItems( );
+        std::cout << "Room items: ";
+        for(auto j : iList) {
+            std::cout << j << "  ";
+        }
+        std::cout << '\n';
+        std::vector<std::string> conList = i->getContainers( );
+        std::cout << "Room containers: ";
+        for(auto j : conList) {
+            std::cout << j << "  ";
+        }
+        std::cout << '\n';
+        std::vector<std::string> creList = i->getCreatures( );
+        std::cout << "Room creatures: ";
+        for(auto j : creList) {
+            std::cout << j << "  ";
+        }
+        std::cout << '\n';
+        i->showTriggers( );
         std::cout << std::endl;
     }
     for(auto i : this->creatures) {
@@ -78,6 +101,7 @@ void Game::ShowObjects( ) {
         for(auto j : vList) {
             std::cout << "Creature vulnerability: "<< j << std::endl;
         }
+        i->showTriggers( );
         std::cout << '\n';
     }
     for(auto i : this->items) {
@@ -85,10 +109,20 @@ void Game::ShowObjects( ) {
         std::cout << "Item status: "<< i->getStatus( ) << std::endl;
         std::cout << "Item owner: "<< i->getOwner( ) << std::endl;
         std::cout << "Item turnon action: "<< i->getTurnOnAction( ) << std::endl;
+        i->showTriggers( );
         std::cout << '\n';
     }
     for(auto i : this->containers) {
-        std::cout << "Container name: "<< i << std::endl;
+        std::cout << "Container name: "<< i->getName( ) << std::endl;
+        std::cout << "Container status: "<< i->getStatus( ) << std::endl;
+        std::cout << "Container description: "<< i->getDescription( ) << std::endl;
+        std::vector<std::string> iList = i->getItems( );
+        std::cout << "Container items: ";
+        for(auto j : iList) {
+            std::cout << j << "  ";
+        }
         std::cout << '\n';
+        i->showTriggers( );
     }
+    std::cout << '\n';
 }

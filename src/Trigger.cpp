@@ -17,13 +17,14 @@ Trigger::Trigger( XMLElement * triggerElement ) {
         setPrint("NONE");
     }
 
+    /* TODO: Condition handling... */
     //XMLElement * conditionElement = triggerElement->FirstChildElement("condition");
 }
 
 Trigger::~Trigger( ) { }
 
 void Trigger::setCommand( std::string newCommand ) {
-    // TODO: Maybe perform check on command?
+    // TODO: Maybe perform check on command? (for late debugging game run)
     command = newCommand;
     return;
 }
@@ -42,6 +43,8 @@ bool Trigger::getReadyStatus( void ) {  return ready;  }
 
 void Trigger::changeMode( std::string newMode ) {
     if(newMode.compare("unlimited") == 0) {
+        this->mode = newMode;
+    } else if(newMode.compare("permanent") == 0) {
         this->mode = newMode;
     } else if(newMode.compare("single") == 0) {
         this->mode = newMode;

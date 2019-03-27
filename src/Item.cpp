@@ -38,7 +38,7 @@ Item::Item( XMLElement * itemElement ) {
         setTurnOnAction("NONE");
     }
 
-    return;
+    /* TODO: Triggers??? */
 }
 
 Item::~Item( ) { }

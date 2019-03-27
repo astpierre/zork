@@ -6,6 +6,8 @@
 #include "Creature.h"
 #include "Component.h"
 #include "Game.h"
+#include "Room.h"
+#include "Container.h"
 #include "Item.h"
 #include "tinyxml2.h"
 using namespace tinyxml2;
@@ -13,8 +15,8 @@ using namespace tinyxml2;
 // Main entrypoint
 int main(void) {
     /* GAME SETUP */
-    Game * game = new Game("test.xml"); // Construct the game
-    game->ShowObjects( ); // Show results after construction
+    Game * game = new Game("test.xml"); // Construct game
+    game->ShowObjects( ); // Show game components
 
     /* RUN GAME */
     // Prompt for command
