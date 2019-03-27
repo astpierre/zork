@@ -13,6 +13,9 @@
 4. ```ninja``` to build and run our executable from the build folder
 5. ```./zork_test``` to execute ```main.cpp```
 
+## TODOs
+![Todos](notes/todos_03_27.png)
+
 ## Screenshots  
 ![Screenshot](notes/constructor_game.png)
 ![Screenshot](notes/main.png)
