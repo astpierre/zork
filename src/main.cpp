@@ -19,6 +19,7 @@ int main(void) {
     game->ShowObjects( ); // Show game components
 
     /* RUN GAME */
+    game->Play( ); // Play the game!
     // Prompt for command
     // |-> If (trigger) --> Execute (trigger)
     // |-> Else --> Execute (command)
