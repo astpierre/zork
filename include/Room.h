@@ -32,6 +32,7 @@ public:
     void addBorder( std::string dir, std::string name );
     std::string checkBorder( std::string dir );
     void showBorders( );
+    std::vector<std::tuple<std::string, std::string>> getBorders( );
 
 
     //void addBorder( XMLElement * ); /* TODO */

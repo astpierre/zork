@@ -19,6 +19,7 @@ public:
     virtual void setDescription( std::string );
     virtual void addTrigger( Trigger * );
     virtual void showTriggers( );
+    std::vector<Trigger *> getTriggers( );
 
 private:
     std::string name = "";

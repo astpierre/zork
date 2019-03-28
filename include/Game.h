@@ -25,6 +25,11 @@ public:
 	bool checkInput( std::string userInput );
 	std::vector<std::string> splitString( const std::string s, const std::string delim );
 	bool moveCommand( std::string cmd );
+	void changeRoom( std::string cmd );
+	bool prelimTriggerCheck( std::vector<std::string> cmdLine );
+	std::string searchAllForType( std::string objName );
+	void handleTrigger(Trigger * t);
+	bool checkConditions(Trigger * t);
 
     void Play( ); /* TODO: game play! */
 	std::vector<Room *> rooms;
@@ -38,6 +43,7 @@ public:
                                     			"read", "drop", "put", "turn", "attack"
                                  			 };
 	std::vector<std::string> movement_commands = { "n", "s", "e", "w" };
+	Room * curr_room = nullptr;
 };
 
 #endif /* GAME_H */

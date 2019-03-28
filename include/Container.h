@@ -13,6 +13,7 @@ public:
     virtual void addItem( std::string );
     virtual void removeItem( std::string );
     virtual std::vector<std::string> getItems( );
+    bool containerContains( std::string obj );
 
     bool open = false;
     bool acceptAll = false;

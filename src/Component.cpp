@@ -29,6 +29,9 @@ void Component::addTrigger( Trigger * trig ) {
     this->triggers.push_back(trig);
     return;
 }
+std::vector<Trigger *> Component::getTriggers( ) {
+    return this->triggers;
+}
 void Component::showTriggers( ) {
     for(auto i : triggers) {
         std::cout << "Trigger type: "<< i->getMode() << std::endl;

@@ -124,16 +124,18 @@ std::vector<std::string> Room::getContainers( ) {
 std::vector<std::string> Room::getCreatures( ) {
     return this->creatures;
 }
+std::vector<std::tuple<std::string, std::string>> Room::getBorders( ) {
+    return this->borders;
+}
 
 void Room::showBorders( ) {
     std::string dir = "";
     std::string rName = "";
     for(auto i : this->borders) {
         std::tie(dir, rName) = i;
-        std::cout << "Bordering room: " << rName << " | In direction: " << dir << '\n';
+        std::cout << "Bordering room: " << rName << " | In direction:" << dir << '\n';
     }
 }
-
 
 void Room::addBorder( std::string dir, std::string name ) {
     std::tuple<std::string, std::string> newBorder = std::make_tuple(dir, name);

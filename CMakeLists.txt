@@ -7,6 +7,7 @@ add_library(zorklib
     include/Container.h
     include/Component.h
     include/Trigger.h
+    include/Condition.h
     include/Creature.h
     include/Room.h
     include/Item.h
@@ -15,6 +16,7 @@ add_library(zorklib
     src/tinyxml2.cpp
     src/Container.cpp
     src/Component.cpp
+    src/Condition.cpp
     src/Trigger.cpp
     src/Creature.cpp
     src/Room.cpp

@@ -1,4 +1,5 @@
 #include "Trigger.h"
+#include "Condition.h"
 #include <iostream>
 #include <string>
 #include "tinyxml2.h"
@@ -17,8 +18,20 @@ Trigger::Trigger( XMLElement * triggerElement ) {
         setPrint("NONE");
     }
 
-    /* TODO: Condition handling... */
-    //XMLElement * conditionElement = triggerElement->FirstChildElement("condition");
+    if(triggerElement->FirstChildElement("command") != nullptr) {
+        setCommand(triggerElement->FirstChildElement("command")->GetText());
+    } else {
+        setCommand("NONE");
+    }
+
+    /* Conditions */
+    XMLElement * pCondition = nullptr;
+    pCondition = triggerElement->FirstChildElement("condition");
+    while(pCondition) {
+        Condition * c = new Condition(pCondition);
+        this->conditions.push_back(c);
+        pCondition = pCondition->NextSiblingElement("condition");
+    }
 }
 
 Trigger::~Trigger( ) { }
@@ -61,3 +74,7 @@ void Trigger::incrTimesUsed( void ) {
     return;
 }
 int Trigger::getTimesUsed( void ) {  return times_used;  }
+
+std::vector<Condition *> Trigger::getConditions( ) {
+    return this->conditions;
+}

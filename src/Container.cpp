@@ -71,3 +71,10 @@ void Container::removeItem( std::string oldItem ) {
 std::vector<std::string> Container::getItems( ) {
     return this->items;
 }
+
+bool Container::containerContains(std::string obj) {
+    for(auto i : this->items) {
+        if(i == obj) return true;
+    }
+    return false;
+}

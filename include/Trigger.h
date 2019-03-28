@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "Condition.h"
 #include "tinyxml2.h"
 using namespace tinyxml2;
 
@@ -22,6 +23,8 @@ public:
     virtual void setPrint( std::string );
     virtual void changeMode( std::string );
     virtual void incrTimesUsed( );
+    std::vector<Condition *> getConditions( );
+
 
 private:
     std::string command = "";
@@ -29,6 +32,7 @@ private:
     std::string mode = "single"; // Default
     int times_used = 0;
     bool ready = false;
+    std::vector<Condition *> conditions;
 };
 
 #endif /* TRIGGER_H */
