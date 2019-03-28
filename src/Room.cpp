@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <tuple>
 #include "Component.h"
 #include "Room.h"
 #include "Trigger.h"
@@ -26,6 +27,14 @@ Room::Room( XMLElement * roomElement ) {
     }
     if(roomElement->FirstChildElement("type") != nullptr) {
         setType(roomElement->FirstChildElement("type")->GetText());
+    }
+
+    /* Room borders */
+    XMLElement * pBorders = nullptr;
+    pBorders = roomElement->FirstChildElement("border");
+    while(pBorders) {
+        addBorder(pBorders);
+
     }
 
     /* Room items */
@@ -60,8 +69,6 @@ Room::Room( XMLElement * roomElement ) {
         addContainer(pContainer->GetText( ));
         pContainer = pContainer->NextSiblingElement("container");
     }
-
-    /* TODO: create borders */
 }
 
 Room::~Room( ) { }
@@ -116,4 +123,21 @@ std::vector<std::string> Room::getContainers( ) {
 }
 std::vector<std::string> Room::getCreatures( ) {
     return this->creatures;
+}
+
+void Room::addBorder( std::string dir, std::string name ) {
+    std::tuple<std::string, std::string> newBorder = std::make_tuple(dir, name);
+    this->borders.push_back(newBorder);
+}
+
+std::string Room::checkBorder( std::string direction ) {
+    std::string dir = "";
+    std::string rName = "";
+    for(auto i : this->borders) {
+        std::tie(dir, rName) = i;
+        if(direction == dir) {
+            return rName;
+        }
+    }
+    return "NONE";
 }

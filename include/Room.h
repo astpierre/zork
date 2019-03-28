@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <tuple>
 #include "Component.h"
 #include "Trigger.h"
 #include "tinyxml2.h"
@@ -28,6 +29,10 @@ public:
     virtual void removeCreature( std::string creature );
     virtual std::vector<std::string> getCreatures( );
 
+    void addBorder( std::string dir, std::string name );
+    std::string checkBorder( std::string dir );
+
+
     //void addBorder( XMLElement * ); /* TODO */
 
 private:
@@ -35,6 +40,7 @@ private:
     std::vector<std::string> items;
     std::vector<std::string> containers;
     std::vector<std::string> creatures;
+    std::vector<std::tuple<std::string, std::string>> borders;
 };
 
 #endif /* ROOM_H */
