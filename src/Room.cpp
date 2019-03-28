@@ -33,8 +33,10 @@ Room::Room( XMLElement * roomElement ) {
     XMLElement * pBorders = nullptr;
     pBorders = roomElement->FirstChildElement("border");
     while(pBorders) {
-        addBorder(pBorders);
-
+        std::string direction = pBorders->FirstChildElement("direction")->GetText();
+        std::string roomName = pBorders->FirstChildElement("name")->GetText();
+        addBorder(direction, roomName);
+        pBorders = pBorders->NextSiblingElement("border");
     }
 
     /* Room items */
@@ -64,7 +66,7 @@ Room::Room( XMLElement * roomElement ) {
 
     /* Room containers */
     XMLElement * pContainer = nullptr;
-    pContainer = roomElement->FirstChildElement("creature");
+    pContainer = roomElement->FirstChildElement("container");
     while(pContainer) {
         addContainer(pContainer->GetText( ));
         pContainer = pContainer->NextSiblingElement("container");
@@ -113,8 +115,6 @@ void Room::removeCreature( std::string creature ) {
     }
 }
 
-//void Room::addBorder( XMLElement * ) { } /* TODO: Borders! */
-
 std::vector<std::string> Room::getItems( ) {
     return this->items;
 }
@@ -125,11 +125,20 @@ std::vector<std::string> Room::getCreatures( ) {
     return this->creatures;
 }
 
+void Room::showBorders( ) {
+    std::string dir = "";
+    std::string rName = "";
+    for(auto i : this->borders) {
+        std::tie(dir, rName) = i;
+        std::cout << "Bordering room: " << rName << " | In direction: " << dir << '\n';
+    }
+}
+
+
 void Room::addBorder( std::string dir, std::string name ) {
     std::tuple<std::string, std::string> newBorder = std::make_tuple(dir, name);
     this->borders.push_back(newBorder);
 }
-
 std::string Room::checkBorder( std::string direction ) {
     std::string dir = "";
     std::string rName = "";

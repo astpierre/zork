@@ -31,6 +31,7 @@ public:
 
     void addBorder( std::string dir, std::string name );
     std::string checkBorder( std::string dir );
+    void showBorders( );
 
 
     //void addBorder( XMLElement * ); /* TODO */

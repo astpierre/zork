@@ -94,6 +94,8 @@ void Game::ShowObjects( ) {
             std::cout << j << "  ";
         }
         std::cout << '\n';
+        i->showBorders( );
+
         i->showTriggers( );
         std::cout << std::endl;
     }
