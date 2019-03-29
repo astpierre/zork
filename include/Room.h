@@ -34,9 +34,6 @@ public:
     void showBorders( );
     std::vector<std::tuple<std::string, std::string>> getBorders( );
 
-
-    //void addBorder( XMLElement * ); /* TODO */
-
 private:
     std::string roomType = "regular";
     std::vector<std::string> items;

@@ -27,6 +27,7 @@ public:
 	bool moveCommand( std::string cmd );
 	void changeRoom( std::string cmd );
 	bool prelimTriggerCheck( std::vector<std::string> cmdLine );
+	void takeCommand( std::vector<std::string> cmdLine );
 	std::string searchAllForType( std::string objName );
 	void handleTrigger(Trigger * t);
 	bool checkConditions(Trigger * t);

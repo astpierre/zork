@@ -164,6 +164,7 @@ void Game::Play( ) {
 
                 } else if(cmd == "take") { /* Attempt to add an item to inventory */
                     std::cout << "taking " << userInputSplitted[1] << '\n';
+                    takeCommand(cmdLine);
                     /* TODO: implement take checks if item is present in a container or curr_room */
 
                 } else if(cmd == "open" && userInputSplitted[1] == "exit") { /* Attempt to exit game. */
@@ -240,6 +241,55 @@ void Game::displayInventory( ) {
         }
         l -= 1;
     }
+}
+
+void Game::takeCommand( std::vector<std::string> cmdLine ) {
+    std::string targetItemName = cmdLine[1];
+    std::vector<std::string> roomItems = curr_room->getItems();
+    std::vector<std::string> roomContainers = curr_room->getItems();
+    std::vector<std::string> containerAccepts;
+
+    Item * targetItem = nullptr;
+    Container * containerToCheck = nullptr;
+    for(auto i : roomItems) {
+        if(i == targetItemName) {
+            targetItem = getItemByName(i);
+            targetItem->setOwner("inventory");
+            curr_room->removeItem(i);
+            addToInventory(i);
+            std::cout << "Added "<< i << " to inventory." << '\n';
+            return;
+        }
+    }
+    for(auto i : roomContainers) {
+        containerToCheck = getContainerByName(i);
+        if(containerToCheck->acceptAll) {
+            if(containerToCheck->containerContains(targetItemName)) {
+                targetItem = getItemByName(targetItemName);
+                targetItem->setOwner("inventory");
+                containerToCheck->removeItem(targetItemName);
+                addToInventory(targetItemName);
+                std::cout << "Added "<< targetItemName << " to inventory." << '\n';
+                return;
+            }
+        } else {
+            for(auto j : containerToCheck->accept) {
+                if(countainerToCheck->containerContains(j)) {
+                    for(auto k : countainerToCheck->items) {
+                        if(k == targetItemName) {
+                            targetItem = getItemByName(targetItemName);
+                            targetItem->setOwner("inventory");
+                            containerToCheck->removeItem(targetItemName);
+                            addToInventory(targetItemName);
+                            std::cout << "Added "<< targetItemName << " to inventory." << '\n';
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    std::cout << "Could not add "<<targetItemName<<" to your inventory." << '\n';
 }
 
 void Game::changeRoom( std::string cmd ) {
