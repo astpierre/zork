@@ -21,7 +21,17 @@ Creature::Creature( XMLElement * creatureElement ) {
         pVulnerability = pVulnerability->NextSiblingElement("vulnerability");
     }
 
-    /* TODO: Attack object (Pass XMLElement to attack constructor) */
+    /* Stores attack object */
+    XMLElement * pattack = nullptr;
+    pattack = creatureElement->FirstChildElement("attack");
+    XMLElement * pCondition = nullptr;
+    while(pattack) {
+        pCondition = pattack->FirstChildElement("condition");
+        Condition * c = new Condition(pCondition);
+        this->attackConditions.push_back(c);
+        this->attackPrint = (pattack->FirstChildElement("print")->GetText());
+        pattack = pattack->NextSiblingElement("attack");
+    }
 
     /* Creature triggers */
     XMLElement * pTrigger = nullptr;
@@ -40,3 +50,7 @@ Creature::~Creature( ) { }
 std::vector<std::string> Creature::getVulnerabilities( ) {
     return this->vulnerabilities;
 }
+std::string Creature::getAttackPrint(){
+    return this->attackPrint;
+}
+
