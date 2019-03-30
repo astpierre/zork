@@ -193,6 +193,41 @@ void Game::Play( ) {
 
                 } else if(cmd == "attack") { /* Attempt to use an item on a creature. */
                     std::cout << "Attacking " << userInputSplitted[1] << " with " << userInputSplitted[2] << '\n';
+
+                    //Checks if creature is in curr_room
+                    std::vector<std::string> creatures_in_room = curr_room->getCreatures();
+                    bool inroom = false;
+                    for(auto i: creatures_in_room){
+                        if(i == userInputSplitted[1]){
+                            inroom = true;
+                        }
+                    }
+                    //Checks to see if the inventory contains that item
+                    if( inroom && inventoryContains(userInputSplitted[2])) {
+                        //Check to see if the creature is vulnerable to that attack
+                        std::vector<std::string> vul = getCreatureByName(userInputSplitted[1])->getVulnerabilities();
+                        bool vulnerable = false;
+                        for(auto i :vul){
+                            if(i == userInputSplitted[1])
+                                vulnerable = true;
+                        }
+                        if(!vulnerable) {
+                            std::cout << "Error" << '/n';
+                        }
+                        else{
+                            /* TODO: Check the  attackConditions of the creature */
+
+                            std::cout << getCreatureByName(userInputSplitted[1])->getAttackPrint() << '/n';
+
+                            /* TODO: Preform actions */
+
+                            /* TODO: Check for triggers */
+                        }
+                    }
+                    else{
+                        std::cout << "Error" << '/n';
+                    }
+
                     /* TODO: Check if item is in inventory then check if creature is in curr_room, then check for trigs */
                 }
 
