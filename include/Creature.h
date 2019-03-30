@@ -14,9 +14,15 @@ public:
     virtual ~Creature( );
 
     std::vector<std::string> getVulnerabilities( );
+    std::string getAttackPrint();
+    std::vector<std::string> getAttackActions();
+
 
 private:
     std::vector<std::string> vulnerabilities;
+    std::string attackPrint;
+    std::vector<Condition *> attackConditions;
+    std::vector<std::string> attackActions;
 };
 
 #endif /* CREATURE_H */
