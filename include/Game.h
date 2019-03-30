@@ -26,10 +26,14 @@ public:
 	std::vector<std::string> splitString( const std::string s, const std::string delim );
 	bool moveCommand( std::string cmd );
 	void changeRoom( std::string cmd );
-	bool prelimTriggerCheck( std::vector<std::string> cmdLine );
+	std::vector<Trigger *> prelimTriggerCheck( std::vector<std::string> cmdLine );
+	std::vector<Trigger *> postTriggerCheck( );
+	void takeCommand( std::vector<std::string> cmdLine );
 	std::string searchAllForType( std::string objName );
 	void handleTrigger(Trigger * t);
 	bool checkConditions(Trigger * t);
+	bool trigValid(Trigger * t);
+	Component * getGameComponent(std::string n);
 
     void Play( ); /* TODO: game play! */
 	std::vector<Room *> rooms;

@@ -22,15 +22,26 @@ Creature::Creature( XMLElement * creatureElement ) {
     }
 
     /* Stores attack object */
-    XMLElement * pattack = nullptr;
-    pattack = creatureElement->FirstChildElement("attack");
+    XMLElement * pAttack = nullptr;
+    pAttack = creatureElement->FirstChildElement("attack");
     XMLElement * pCondition = nullptr;
-    while(pattack) {
-        pCondition = pattack->FirstChildElement("condition");
-        Condition * c = new Condition(pCondition);
-        this->attackConditions.push_back(c);
-        this->attackPrint = (pattack->FirstChildElement("print")->GetText());
-        pattack = pattack->NextSiblingElement("attack");
+    XMLElement * pAction = nullptr;
+    while(pAttack) {
+        pCondition = pAttack->FirstChildElement("condition");
+        while(pCondition) {
+            Condition * c = new Condition(pCondition);
+            this->attackConditions.push_back(c);
+            pCondition = pCondition->NextSiblingElement("condition");
+        }
+
+        this->attackPrint = (pAttack->FirstChildElement("print")->GetText());
+
+        pAction = pAttack->FirstChildElement("action");
+        while(pAction) {
+            this->attackActions.push_back(pAction->GetText());
+            pAction = pAction->NextSiblingElement("action");
+        }
+        pAttack = pAttack->NextSiblingElement("attack");
     }
 
     /* Creature triggers */
@@ -47,10 +58,27 @@ Creature::Creature( XMLElement * creatureElement ) {
 
 Creature::~Creature( ) { }
 
+void Creature::addVulnerability( std::string vul ) {
+    this->vulnerabilities.push_back(vul);
+}
+bool Creature::hasVulnerability( std::string vul ) {
+    for(auto i : this->vulnerabilities) {
+        if(i == vul) return true;
+    }
+    return false;
+}
 std::vector<std::string> Creature::getVulnerabilities( ) {
     return this->vulnerabilities;
 }
 std::string Creature::getAttackPrint(){
     return this->attackPrint;
 }
-
+std::vector<std::string> Creature::getAttackActions( ) {
+    return this->attackActions;
+}
+std::vector<Condition *> Creature::getAttackConditions( ) {
+    return this->attackConditions;
+}
+void Creature::addAttackAction( std::string action ) {
+    this->attackActions.push_back(action);
+}
