@@ -6,30 +6,35 @@
 using namespace tinyxml2;
 
 Item::Item( XMLElement * itemElement ) {
+    /* Item name */
     if(itemElement->FirstChildElement("name") != nullptr) {
         setName(itemElement->FirstChildElement("name")->GetText());
     } else {
         setName("NONE");
     }
 
+    /* Item status */
     if(itemElement->FirstChildElement("status") != nullptr) {
         setStatus(itemElement->FirstChildElement("status")->GetText());
     } else {
         setStatus("NONE");
     }
 
+    /* Item owner */
     if(itemElement->FirstChildElement("owner") != nullptr) {
         setOwner(itemElement->FirstChildElement("owner")->GetText());
     } else {
         setOwner("NONE");
     }
 
+    /* Item writing */
     if(itemElement->FirstChildElement("writing") != nullptr) {
         setWriting(itemElement->FirstChildElement("writing")->GetText());
     } else {
         setWriting("NONE");
     }
 
+    /* Item turnons */
     if(itemElement->FirstChildElement("turnon") != nullptr) {
         setTurnOnPrint(itemElement->FirstChildElement("turnon")->FirstChildElement("print")->GetText());
         setTurnOnAction(itemElement->FirstChildElement("turnon")->FirstChildElement("action")->GetText());
@@ -38,7 +43,14 @@ Item::Item( XMLElement * itemElement ) {
         setTurnOnAction("NONE");
     }
 
-    /* TODO: Triggers??? */
+    /* Item triggers */
+    XMLElement * pTrigger = nullptr;
+    pTrigger = itemElement->FirstChildElement("trigger");
+    while(pTrigger) {
+        Trigger * t = new Trigger(pTrigger);
+        addTrigger(t);
+        pTrigger = pTrigger->NextSiblingElement("trigger");
+    }
 }
 
 Item::~Item( ) { }
