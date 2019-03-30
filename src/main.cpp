@@ -16,7 +16,7 @@ using namespace tinyxml2;
 int main(void) {
     /* GAME SETUP */
     Game * game = new Game("test.xml"); // Construct game
-    game->ShowObjects( ); // Show game components
+    //game->ShowObjects( ); // Show game components
 
     /* RUN GAME */
     game->Play( ); // Play the game!

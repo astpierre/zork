@@ -9,6 +9,7 @@ using namespace tinyxml2;
 
 class Item: public Component {
 public:
+    Item( );
     Item( XMLElement * );
     virtual ~Item( );
 
@@ -23,6 +24,8 @@ public:
 
     void setTurnOnAction( std::string );
     std::string getTurnOnAction( );
+
+    bool itemOn = false;
 
 private:
     std::string owner = "";

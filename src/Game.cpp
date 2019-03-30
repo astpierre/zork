@@ -139,6 +139,8 @@ bool Game::moveCommand( std::string cmd ) {
 }
 void Game::Play( ) {
     curr_room = getRoomByName("Entrance"); // Games always start here
+    std::cout << "Current room: " << curr_room->getName() << '\n';
+    std::cout << "Room description: " << curr_room->getDescription() << '\n';
     std::string userInputStr = "";
     std::vector<std::string> userInputSplitted;
     std::string cmd = "";
@@ -163,7 +165,6 @@ void Game::Play( ) {
                     changeRoom(cmd);
 
                 } else if(cmd == "take") { /* Attempt to add an item to inventory */
-                    std::cout << "taking " << userInputSplitted[1] << '\n';
                     takeCommand(userInputSplitted);
 
                 } else if(cmd == "open" && userInputSplitted[1] == "exit") { /* Attempt to exit game. */
@@ -171,29 +172,23 @@ void Game::Play( ) {
                     game_over = true;
 
                 } else if(cmd == "open") { /* Attempt to open a container. */
-                    std::cout << "opening " << userInputSplitted[1] << '\n';
-                    //openCommand(userInputSplitted);
-                    /* TODO: implement open checks if container conditions are met */
-                    /* TODO: implement container display function [ see displayInventory() ] */
+                    openCommand(userInputSplitted);
 
                 } else if(cmd == "read") { /* Attempt to read writing on an item in inventory. */
-                    std::cout << "reading " << userInputSplitted[1] << '\n';
-                    /* TODO: check if item is in inventory then use getWriting to view item writing */
+                    readCommand(userInputSplitted);
 
                 } else if(cmd == "drop") { /* Attempt to drop an item from inventory. */
-                    std::cout << "dropping " << userInputSplitted[1] << '\n';
-                    /* TODO: Check if item is in inventory then add item to current room. */
+                    dropCommand(userInputSplitted);
 
                 } else if(cmd == "put") { /* Attempt to put an item in container. */
-                    std::cout << "putting " << userInputSplitted[1] << " in " << userInputSplitted[3] << '\n';
-                    /* TODO: Check if item is in inventory and add it to container if container conditions are met */
+                    putCommand(userInputSplitted);
 
                 } else if(cmd == "turn" && userInputSplitted[1] == "on") { /* Attempt to activate an item in inventory */
-                    std::cout << "turning on " << userInputSplitted[2] << '\n';
-                    /* TODO: Check if item is in inventory and activate it if conditions are met */
+                    turnOnCommand(userInputSplitted);
 
                 } else if(cmd == "attack") { /* Attempt to use an item on a creature. */
-                    std::cout << "Attacking " << userInputSplitted[1] << " with " << userInputSplitted[2] << '\n';
+                    attackCommand(userInputSplitted);
+                    // /std::cout << "Attacking " << userInputSplitted[1] << " with " << userInputSplitted[2] << '\n';
                     /* TODO: Check if item is in inventory then check if creature is in curr_room, then check for trigs */
                 }
 
@@ -251,21 +246,23 @@ std::vector<Trigger *> Game::postTriggerCheck( ) {
     }
     std::cout << "postTriggerCheck(): completed checking room"<< '\n';
     /* Check creature triggers */
-    /*if(!curr_creatures.empty()) {
-        for(auto i : curr_creatures){
+    if(!curr_creatures.empty()) {
+        for(auto i : curr_creatures) {
             Creature * c = getCreatureByName(i);
-            trigger_vector = c->getTriggers();
-            for(auto j : trigger_vector) {
-                if(j->getCommand() == "NONE") {
-                    if(trigValid(j)) {
-                        if(checkConditions(j)) {
-                            triggers_ready.push_back(j);
+            if(c != nullptr) {
+                trigger_vector = c->getTriggers();
+                for(auto j : trigger_vector) {
+                    if(j->getCommand() == "NONE") {
+                        if(trigValid(j)) {
+                            if(checkConditions(j)) {
+                                triggers_ready.push_back(j);
+                            }
                         }
                     }
                 }
             }
         }
-    }*/
+    }
     std::cout << "postTriggerCheck(): completed checking creatures"<< '\n';
     /* Check container triggers */
     if(!curr_containers.empty()) {
@@ -283,7 +280,7 @@ std::vector<Trigger *> Game::postTriggerCheck( ) {
             }
         }
     }
-    std::cout << "postTriggerCheck(): completed checking containers"<< '\n';
+    //std::cout << "postTriggerCheck(): completed checking containers"<< '\n';
 
     /* Check item triggers */
     if(!curr_items.empty()) {
@@ -301,11 +298,10 @@ std::vector<Trigger *> Game::postTriggerCheck( ) {
             }
         }
     }
-    std::cout << "postTriggerCheck(): end"<< '\n';
+    //std::cout << "postTriggerCheck(): end"<< '\n';
 
     return triggers_ready;
 }
-
 bool Game::trigValid(Trigger * t) {
     std::string mode = t->getMode();
     int nTimesUsed = t->getTimesUsed();
@@ -315,7 +311,6 @@ bool Game::trigValid(Trigger * t) {
     else if(nTimesUsed < 1) return true;
     return false;
 }
-
 bool Game::inventoryContains( std::string obj ) {
     for(auto i : this->inventory) {
         if(i == obj) return true;
@@ -353,7 +348,7 @@ void Game::displayInventory( ) {
 void Game::takeCommand( std::vector<std::string> cmdLine ) {
     std::string targetItemName = cmdLine[1];
     std::vector<std::string> roomItems = curr_room->getItems();
-    std::vector<std::string> roomContainers = curr_room->getItems();
+    std::vector<std::string> roomContainers = curr_room->getContainers();
     std::vector<std::string> containerAccepts;
 
     Item * targetItem = nullptr;
@@ -370,35 +365,209 @@ void Game::takeCommand( std::vector<std::string> cmdLine ) {
     }
     for(auto i : roomContainers) {
         containerToCheck = getContainerByName(i);
-        if(containerToCheck->acceptAll) {
-            if(containerToCheck->containerContains(targetItemName)) {
-                targetItem = getItemByName(targetItemName);
-                targetItem->setOwner("inventory");
-                containerToCheck->removeItem(targetItemName);
-                addToInventory(targetItemName);
-                std::cout << "Added "<< targetItemName << " to inventory." << '\n';
-                return;
-            }
-        } else {
-            for(auto j : containerToCheck->accept) {
-                if(containerToCheck->containerContains(j)) {
-                    for(auto k : containerToCheck->items) {
-                        if(k == targetItemName) {
-                            targetItem = getItemByName(targetItemName);
-                            targetItem->setOwner("inventory");
-                            containerToCheck->removeItem(targetItemName);
-                            addToInventory(targetItemName);
-                            std::cout << "Added "<< targetItemName << " to inventory." << '\n';
-                            return;
+        if(containerToCheck->open) {
+            if(containerToCheck->acceptAll) {
+                if(containerToCheck->containerContains(targetItemName)) {
+                    targetItem = getItemByName(targetItemName);
+                    targetItem->setOwner("inventory");
+                    containerToCheck->removeItem(targetItemName);
+                    addToInventory(targetItemName);
+                    std::cout << "Added "<< targetItemName << " to inventory." << '\n';
+                    return;
+                }
+            } else {
+                for(auto j : containerToCheck->accept) {
+                    if(containerToCheck->containerContains(j)) {
+                        for(auto k : containerToCheck->items) {
+                            if(k == targetItemName) {
+                                targetItem = getItemByName(targetItemName);
+                                targetItem->setOwner("inventory");
+                                containerToCheck->removeItem(targetItemName);
+                                addToInventory(targetItemName);
+                                std::cout << "Added "<< targetItemName << " to inventory." << '\n';
+                                return;
+                            }
                         }
                     }
                 }
             }
+        } else {
+            std::cout << "Could not add "<<targetItemName<<" to your inventory." << '\n';
+            std::cout << "Container must be open to take items from it..." << '\n';
+            return;
         }
     }
     std::cout << "Could not add "<<targetItemName<<" to your inventory." << '\n';
 }
+void Game::openCommand( std::vector<std::string> cmdLine ) {
+    std::string targetContainerName = cmdLine[1];
+    std::vector<std::string> roomContainers = curr_room->getContainers();
+    std::vector<std::string> containerItems;
+    for(auto i : roomContainers) {
+        if(i == targetContainerName) {
+            Container * c = getContainerByName(i);
+            if(c->acceptAll) {
+                if(c->items.empty()) {
+                    std::cout << c->getName() << " is empty." << '\n';
+                } else {
+                    std::cout << c->getName() <<" contains ";
+                    for(auto j : c->items) {
+                        std::cout << j << ", ";
+                    }
+                    std::cout << std::endl;
+                }
+                c->open = true;
+                return;
+            } else {
+                for(auto k : c->accept) {
+                    if(!c->containerContains(k)) {
+                        std::cout << c->getName() <<" requires "<< k << " to be opened." << '\n';
+                        return;
+                    }
+                }
+                if(c->items.empty()) {
+                    std::cout << c->getName() << " is empty." << '\n';
+                } else {
+                    std::cout << c->getName() <<" contains ";
+                    for(auto j : c->items) {
+                        std::cout << j << ", ";
+                    }
+                    std::cout << std::endl;
+                }
+                c->open = true;
+                return;
 
+            }
+        }
+    }
+}
+void Game::dropCommand( std::vector<std::string> cmdLine ) {
+    std::string itemName = cmdLine[1];
+    if(inventoryContains(itemName)) {
+        Item * itemObj = getItemByName(itemName);
+        itemObj->setOwner(curr_room->getName());
+        curr_room->addItem(itemName);
+        removeFromInventory(itemName);
+        std::cout << itemName <<" dropped." << '\n';
+        return;
+    } else {
+        std::cout << "You do not have " << itemName << " in your inventory." << '\n';
+        return;
+    }
+}
+void Game::putCommand( std::vector<std::string> cmdLine ) {
+    std::string itemName = cmdLine[1];
+    std::string containerName = cmdLine[3];
+    std::vector<std::string> room_containers = curr_room->getContainers();
+    bool room_has_container = false;
+    Container * targetContainer = nullptr;
+    for(auto i : room_containers) {
+        if(i == containerName) {
+            room_has_container = true;
+            Container * targetContainer = getContainerByName(i);
+        }
+    }
+    if(room_has_container == false) {
+        std::cout << "Must be in same room as container to put items in it." << '\n';
+        return;
+    }
+
+    if(inventoryContains(itemName)) {
+        Item * itemObj = getItemByName(itemName);
+        itemObj->setOwner(targetContainer->getName());
+        targetContainer->addItem(itemName);
+        removeFromInventory(itemName);
+        std::cout << "Item " << itemName <<" added to " << targetContainer->getName() << "." << '\n';
+        return;
+    } else {
+        std::cout << "You do not have " << itemName << " in your inventory." << '\n';
+        return;
+    }
+}
+void Game::turnOnCommand( std::vector<std::string> cmdLine ) {
+    std::string itemName = cmdLine[2];
+    Item * itemObj = nullptr;
+    if(inventoryContains(itemName)) {
+        itemObj = getItemByName(itemName);
+        if(itemObj->getTurnOnPrint() == "NONE") {
+            std::cout << "Item does not have a turn-on element." << '\n';
+            return;
+        }
+        std::cout << itemObj->getTurnOnPrint() << '\n';
+        itemObj->itemOn = true;
+        handleAction(itemObj->getTurnOnAction());
+        return;
+    } else {
+        std::cout << "You do not have " << itemName << " in your inventory." << '\n';
+        return;
+    }
+}
+void Game::attackCommand( std::vector<std::string> cmdLine ) {
+    std::string itemName = cmdLine[3];
+    std::string creatureName = cmdLine[1];
+    std::vector<std::string> room_creatures = curr_room->getCreatures();
+    bool roomHasCreature = false;
+    bool creatureHasVulnerability = false;
+    Creature * cToAttack = nullptr;
+    if(inventoryContains(itemName)) {
+        Item * itemObj = getItemByName(itemName);
+    } else {
+        std::cout << "You do not have " << itemName << " in your inventory." << '\n';
+        return;
+    }
+    for(auto c : room_creatures) {
+        if(c == creatureName) {
+            roomHasCreature = true;
+            cToAttack = getCreatureByName(c);
+        }
+    }
+    if(roomHasCreature == false) {
+        std::cout << "The creature must be in the same room as you." << '\n';
+        return;
+    }
+
+    if(cToAttack == nullptr) std::cout << "err: creature null?" << '\n'; /* TODO: rm */
+
+    std::vector<std::string> cVulnerabilities = cToAttack->getVulnerabilities();
+    for(auto v : cVulnerabilities) {
+        if(v == itemName) {
+            creatureHasVulnerability = true;
+        }
+    }
+    if(creatureHasVulnerability == false) {
+        std::cout << "Creature is not vulnerable to this attack." << '\n';
+        return;
+    }
+    std::vector<Condition *> attackConds = cToAttack->getAttackConditions();
+    std::vector<std::string> attackActions = cToAttack->getAttackActions();
+    for(auto c : attackConds) {
+        if(checkAttackCondition(c) == false) {
+            std::cout << "Creature is not vulnerable to this attack." << '\n';
+            return;
+        }
+    }
+    std::cout << cToAttack->getAttackPrint() << '\n';
+    for(auto a : attackActions) {
+        handleAction(a);
+    }
+}
+
+void Game::readCommand( std::vector<std::string> cmdLine ) {
+    std::string itemName = cmdLine[1];
+    if(inventoryContains(itemName)) {
+        Item * itemObj = getItemByName(itemName);
+        if(itemObj->getWriting() == "NONE") {
+            std::cout << "Nothing written on item." << '\n';
+            return;
+        } else {
+            std::cout << itemObj->getWriting() << '\n';
+            return;
+        }
+    } else {
+        std::cout << "You do not have " << itemName << " in your inventory." << '\n';
+        return;
+    }
+}
 void Game::changeRoom( std::string cmd ) {
     std::string dir = "";
     std::string rName = "";
@@ -463,7 +632,7 @@ std::vector<Trigger *> Game::prelimTriggerCheck( std::vector<std::string> cmdLin
     std::vector<Trigger *> trigger_vector;
     std::vector<Trigger *> triggers_ready;
     bool gotAtLeastOne = false;
-    std::cout << "prelimTriggerCheck(): begin" << '\n';
+    //std::cout << "prelimTriggerCheck(): begin" << '\n';
 
     /* Check creature triggers */
     if(!curr_creatures.empty()) {
@@ -486,7 +655,7 @@ std::vector<Trigger *> Game::prelimTriggerCheck( std::vector<std::string> cmdLin
 
         }
     }
-    std::cout << "prelimTriggerCheck(): completed creature checks" << '\n';
+    //std::cout << "prelimTriggerCheck(): completed creature checks" << '\n';
 
     /* Check current room triggers */
     trigger_vector = curr_room->getTriggers();
@@ -501,7 +670,7 @@ std::vector<Trigger *> Game::prelimTriggerCheck( std::vector<std::string> cmdLin
             }
         }
     }
-    std::cout << "prelimTriggerCheck(): completed room checks" << '\n';
+    //std::cout << "prelimTriggerCheck(): completed room checks" << '\n';
 
     /* Check container triggers */
     if(!curr_containers.empty()) {
@@ -524,7 +693,7 @@ std::vector<Trigger *> Game::prelimTriggerCheck( std::vector<std::string> cmdLin
 
         }
     }
-    std::cout << "prelimTriggerCheck(): completed container checks" << '\n';
+    //std::cout << "prelimTriggerCheck(): completed container checks" << '\n';
 
     /* Check item triggers */
     if(!curr_items.empty()) {
@@ -546,9 +715,9 @@ std::vector<Trigger *> Game::prelimTriggerCheck( std::vector<std::string> cmdLin
             }
         }
     }
-    std::cout << "prelimTriggerCheck(): completed item checks" << '\n';
+    //std::cout << "prelimTriggerCheck(): completed item checks" << '\n';
 
-    std::cout << "prelimTriggerCheck(): end" << '\n';
+    //std::cout << "prelimTriggerCheck(): end" << '\n';
 
     return triggers_ready;
 }
@@ -560,7 +729,6 @@ bool Game::checkConditions(Trigger * t) {
     std::string owner = "";
     Container * c;
     Item * o;
-    std::cout << "checkConditions(t): " << t->getCommand()<< '\n';
     for(auto k : condition_vector) {
         if(k->getStatus() != "NONE") {
             baseComp = getGameComponent(k->getObject());
@@ -594,6 +762,47 @@ bool Game::checkConditions(Trigger * t) {
                     if(c->getName() != o->getOwner()) return true;
                     else return false;
                 }
+            }
+        }
+    }
+    return false;
+}
+bool Game::checkAttackCondition(Condition * cond) {
+    Component * baseComp = nullptr;
+    std::string owner = "";
+    Container * c;
+    Item * o;
+
+    if(cond->getStatus() != "NONE") {
+        baseComp = getGameComponent(cond->getObject());
+        if(baseComp->getStatus() == cond->getStatus()) return true;
+        else return false;
+    }
+
+    if(cond->getHas() == "yes") {
+        owner = cond->getOwner();
+        if(owner == "inventory") {
+            if(inventoryContains(cond->getObject())) return true;
+            else return false;
+        } else {
+            c = getContainerByName(owner);
+            o = getItemByName(cond->getObject());
+            if(c) {
+                if(c->getName() == o->getOwner()) return true;
+                else return false;
+            }
+        }
+    } else if(cond->getHas() == "no") {
+        owner = cond->getOwner();
+        if(owner == "inventory") {
+            if(!inventoryContains(cond->getObject())) return true;
+            else return false;
+        } else {
+            c = getContainerByName(owner);
+            o = getItemByName(cond->getObject());
+            if(c) {
+                if(c->getName() != o->getOwner()) return true;
+                else return false;
             }
         }
     }
@@ -646,6 +855,34 @@ void Game::handleTrigger(Trigger * t) {
     } else if(triggerActionSplitted[0] == "Delete") {
         /* TODO: Delete action */
         std::cout << "Delete "<<triggerActionSplitted[1] <<" from game." << '\n';
+    }
+}
+void Game::handleAction( std::string actionStr ) {
+    std::vector<std::string> actionSplitted = splitString(actionStr, " ");
+    if(actionSplitted[0] == "Update") { /* Update status of object */
+        Component * baseComp = getGameComponent(actionSplitted[1]);
+        baseComp->setStatus(actionSplitted[3]);
+
+    } else if(actionSplitted[0] == "Add") {
+        Room * targetRoom = getRoomByName(actionSplitted[3]);
+        Container * targetContainer = getContainerByName(actionSplitted[3]);
+        if(targetRoom) {
+            Item * newItem = new Item();
+            newItem->setName(actionSplitted[1]);
+            this->items.push_back(newItem);
+            newItem->setOwner(targetRoom->getName());
+            targetRoom->addItem(newItem->getName());
+        } else if(targetContainer) {
+            Item * newItem = new Item();
+            newItem->setName(actionSplitted[1]);
+            this->items.push_back(newItem);
+            newItem->setOwner(targetContainer->getName());
+            targetContainer->addItem(newItem->getName());
+        }
+
+    } else if(actionSplitted[0] == "Delete") {
+        /* TODO: Delete action */
+        std::cout << "Delete "<<actionSplitted[1] <<" from game." << '\n';
     }
 }
 
