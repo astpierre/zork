@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 using namespace tinyxml2;
-
+Item::Item( ) { }
 Item::Item( XMLElement * itemElement ) {
     /* Item name */
     if(itemElement->FirstChildElement("name") != nullptr) {
@@ -51,6 +51,9 @@ Item::Item( XMLElement * itemElement ) {
         addTrigger(t);
         pTrigger = pTrigger->NextSiblingElement("trigger");
     }
+
+    // All items not turned on to begin
+    itemOn = false;
 }
 
 Item::~Item( ) { }

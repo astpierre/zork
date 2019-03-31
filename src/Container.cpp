@@ -53,6 +53,8 @@ Container::Container( XMLElement * containerElement ) {
         pTrigger = pTrigger->NextSiblingElement("trigger");
     }
 
+    this->open = false;
+
     return;
 }
 

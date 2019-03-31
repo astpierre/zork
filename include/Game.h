@@ -29,11 +29,20 @@ public:
 	std::vector<Trigger *> prelimTriggerCheck( std::vector<std::string> cmdLine );
 	std::vector<Trigger *> postTriggerCheck( );
 	void takeCommand( std::vector<std::string> cmdLine );
+	void openCommand( std::vector<std::string> cmdLine );
+	void dropCommand( std::vector<std::string> cmdLine );
+	void readCommand( std::vector<std::string> cmdLine );
+	void putCommand( std::vector<std::string> cmdLine );
+	void attackCommand( std::vector<std::string> cmdLine );
+	void turnOnCommand( std::vector<std::string> cmdLine );
 	std::string searchAllForType( std::string objName );
 	void handleTrigger(Trigger * t);
+	void handleAction( std::string actionStr );
 	bool checkConditions(Trigger * t);
+	bool checkAttackCondition(Condition *);
 	bool trigValid(Trigger * t);
 	Component * getGameComponent(std::string n);
+
 
     void Play( ); /* TODO: game play! */
 	std::vector<Room *> rooms;
