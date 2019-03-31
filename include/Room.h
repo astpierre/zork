@@ -1,13 +1,17 @@
 #ifndef ROOM_H
 #define ROOM_H
-#include <iostream>
-#include <vector>
-#include <string>
-#include <tuple>
 #include "Component.h"
+#include "Condition.h"
 #include "Trigger.h"
 #include "tinyxml2.h"
+#include <iostream>
+#include <fstream>
+#include <iterator>
+#include <vector>
+#include <tuple>
+#include <string>
 using namespace tinyxml2;
+
 
 class Room: public Component {
 public:

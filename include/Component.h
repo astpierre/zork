@@ -1,9 +1,16 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
-#include <iostream>
-#include <vector>
-#include "tinyxml2.h"
+#include "Condition.h"
 #include "Trigger.h"
+#include "tinyxml2.h"
+#include <iostream>
+#include <fstream>
+#include <iterator>
+#include <vector>
+#include <tuple>
+#include <string>
+using namespace tinyxml2;
+
 
 class Component {
 public:
@@ -27,7 +34,5 @@ private:
     std::string description = "";
     std::vector<Trigger *> triggers;
 };
-
-
 
 #endif /* COMPONENT_H */

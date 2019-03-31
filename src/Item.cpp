@@ -1,10 +1,18 @@
 #include "Item.h"
+#include "Component.h"
+#include "Condition.h"
 #include "Trigger.h"
 #include "tinyxml2.h"
 #include <iostream>
+#include <fstream>
+#include <iterator>
+#include <vector>
+#include <tuple>
 #include <string>
 using namespace tinyxml2;
-Item::Item( ) { }
+
+/* Constructor/Destructor for Item */
+Item::Item( ) { } // Default
 Item::Item( XMLElement * itemElement ) {
     /* Item name */
     if(itemElement->FirstChildElement("name") != nullptr) {
@@ -58,6 +66,7 @@ Item::Item( XMLElement * itemElement ) {
 
 Item::~Item( ) { }
 
+/* Setter/Getter for writing on item */
 void Item::setWriting( std::string writingStr ) {
     this->writing = writingStr;
     return;
@@ -66,6 +75,7 @@ std::string Item::getWriting( ) {
     return this->writing;
 }
 
+/* Setter/Getter for owner of item */
 void Item::setOwner( std::string ownerName ) {
     this->owner = ownerName;
     return;
@@ -74,6 +84,7 @@ std::string Item::getOwner( ) {
     return this->owner;
 }
 
+/* Setter/Getter for turn-on print message */
 void Item::setTurnOnPrint( std::string turnOnPrint ) {
     this->turn_on_print = turnOnPrint;
     return;
@@ -82,6 +93,7 @@ std::string Item::getTurnOnPrint( ) {
     return this->turn_on_print;
 }
 
+/* Setter/Getter for turn-on action */
 void Item::setTurnOnAction( std::string turnOnAction ) {
     this->turn_on_action = turnOnAction;
     return;

@@ -1,11 +1,18 @@
 #include "Container.h"
+#include "Component.h"
+#include "Condition.h"
+#include "Item.h"
 #include "Trigger.h"
 #include "tinyxml2.h"
 #include <iostream>
+#include <fstream>
+#include <iterator>
 #include <vector>
+#include <tuple>
 #include <string>
 using namespace tinyxml2;
 
+/* Constructor/Destructor for Container */
 Container::Container( XMLElement * containerElement ) {
     /* Container name, status, description */
     if(containerElement->FirstChildElement("name") != nullptr) {
@@ -60,6 +67,7 @@ Container::Container( XMLElement * containerElement ) {
 
 Container::~Container( ) { }
 
+/* Setter/Getter + Methdos for Items */
 void Container::addItem( std::string newItem ) {
     this->items.push_back(newItem);
 }
@@ -73,7 +81,6 @@ void Container::removeItem( std::string oldItem ) {
 std::vector<std::string> Container::getItems( ) {
     return this->items;
 }
-
 bool Container::containerContains(std::string obj) {
     for(auto i : this->items) {
         if(i == obj) return true;

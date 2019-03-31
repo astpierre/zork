@@ -1,21 +1,22 @@
+#include "Game.h"
+#include "Component.h"
+#include "Creature.h"
+#include "Condition.h"
+#include "Container.h"
+#include "Item.h"
+#include "Room.h"
+#include "Trigger.h"
+#include "tinyxml2.h"
 #include <iostream>
-#include <vector>
-#include <string>
-#include <tuple>
 #include <fstream>
 #include <iterator>
-#include "Component.h"
-#include "Container.h"
-#include "Trigger.h"
-#include "Creature.h"
-#include "Room.h"
-#include "Item.h"
-#include "Game.h"
-#include "tinyxml2.h"
+#include <vector>
+#include <tuple>
+#include <string>
 using namespace tinyxml2;
 
+/* Primary methods */
 Game::~Game( ) { } /* Deconstructor */
-
 Game::Game( const char * xmlfile ) { /* Constructor */
     /* Open XML file using tinyxml2 */
     XMLDocument doc;
@@ -70,8 +71,7 @@ Game::Game( const char * xmlfile ) { /* Constructor */
     }
 
 }
-
-void Game::ShowObjects( ) {
+void Game::ShowObjects( ) { /* Good debugging tool displays status */
     std::cout << "Displaying game components: "<<std::endl;
     for(auto i : this->rooms) {
         std::cout << "Room name: "<< i->getName( ) << std::endl;
@@ -131,16 +131,10 @@ void Game::ShowObjects( ) {
     }
     std::cout << '\n';
 }
-bool Game::moveCommand( std::string cmd ) {
-    for(auto i : this->movement_commands) {
-        if(i == cmd) return true;
-    }
-    return false;
-}
-void Game::Play( ) {
+void Game::Play( ) { /* Called afer constructing the game */
     curr_room = getRoomByName("Entrance"); // Games always start here
-    std::cout << "Current room: " << curr_room->getName() << '\n';
-    std::cout << "Room description: " << curr_room->getDescription() << '\n';
+    std::cout <<"Current room: " << curr_room->getName() << '\n';
+    std::cout << "Description: " << curr_room->getDescription() << '\n';
     std::string userInputStr = "";
     std::vector<std::string> userInputSplitted;
     std::string cmd = "";
@@ -188,12 +182,10 @@ void Game::Play( ) {
 
                 } else if(cmd == "attack") { /* Attempt to use an item on a creature. */
                     attackCommand(userInputSplitted);
-                    // /std::cout << "Attacking " << userInputSplitted[1] << " with " << userInputSplitted[2] << '\n';
                 }
 
             } else if(!trigCheck) { /* Handle preliminary triggers */
                 for(auto t : trigs_ready) {
-                    std::cout << "got trigCheck, handleTrigger()" << '\n';
                     handleTrigger(t);
                 }
                 trigCheck=false;
@@ -219,106 +211,10 @@ void Game::Play( ) {
     }
 }
 
-std::vector<Trigger *> Game::postTriggerCheck( ) {
-    /* Get context */
-    std::vector<std::string> curr_creatures = curr_room->getCreatures();
-    std::vector<std::string> curr_containers = curr_room->getContainers();
-    std::vector<std::string> curr_items = curr_room->getItems();
-    curr_items.insert(curr_items.end(), inventory.begin(), inventory.end());
-    std::vector<Trigger *> trigger_vector;
-    std::vector<Trigger *> triggers_ready;
-    bool gotAtLeastOne = false;
-    std::cout << "postTriggerCheck(): begin"<< '\n';
-
-
-
-    /* Check current room triggers */
-    trigger_vector = curr_room->getTriggers();
-    for(auto j : trigger_vector) {
-        if(j->getCommand() == "NONE") {
-            if(trigValid(j)) {
-                if(checkConditions(j)) {
-                    triggers_ready.push_back(j);
-                }
-            }
-        }
-    }
-    std::cout << "postTriggerCheck(): completed checking room"<< '\n';
-    /* Check creature triggers */
-    if(!curr_creatures.empty()) {
-        for(auto i : curr_creatures) {
-            Creature * c = getCreatureByName(i);
-            if(c != nullptr) {
-                trigger_vector = c->getTriggers();
-                for(auto j : trigger_vector) {
-                    if(j->getCommand() == "NONE") {
-                        if(trigValid(j)) {
-                            if(checkConditions(j)) {
-                                triggers_ready.push_back(j);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-    std::cout << "postTriggerCheck(): completed checking creatures"<< '\n';
-    /* Check container triggers */
-    if(!curr_containers.empty()) {
-        for(auto i : curr_containers) {
-            Container * c = getContainerByName(i);
-            trigger_vector = c->getTriggers();
-            for(auto j : trigger_vector) {
-                if(j->getCommand() == "NONE") {
-                    if(trigValid(j)) {
-                        if(checkConditions(j)) {
-                            triggers_ready.push_back(j);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    //std::cout << "postTriggerCheck(): completed checking containers"<< '\n';
-
-    /* Check item triggers */
-    if(!curr_items.empty()) {
-        for(auto i : curr_items) {
-            Item * it = getItemByName(i);
-            trigger_vector = it->getTriggers();
-            for(auto j : trigger_vector) {
-                if(j->getCommand() == "NONE") {
-                    if(trigValid(j)) {
-                        if(checkConditions(j)) {
-                            triggers_ready.push_back(j);
-                        }
-                    }
-                }
-            }
-        }
-    }
-    //std::cout << "postTriggerCheck(): end"<< '\n';
-
-    return triggers_ready;
-}
-bool Game::trigValid(Trigger * t) {
-    std::string mode = t->getMode();
-    int nTimesUsed = t->getTimesUsed();
-    if(mode == "unlimited" || mode == "permanent") {
-        return true;
-    }
-    else if(nTimesUsed < 1) return true;
-    return false;
-}
+/* Inventory methods */
 bool Game::inventoryContains( std::string obj ) {
     for(auto i : this->inventory) {
         if(i == obj) return true;
-    }
-    return false;
-}
-bool Game::checkInput( std::string userInput ) {
-    for(auto i : this->game_commands) {
-        if(i == userInput) return true;
     }
     return false;
 }
@@ -334,6 +230,7 @@ void Game::removeFromInventory( std::string obj ) {
 }
 void Game::displayInventory( ) {
     unsigned int l = inventory.size();
+    std::cout << "Inventory: ";
     for(auto i : this->inventory) {
         if(l == 1) {
             std::cout << i << '\n';
@@ -344,6 +241,7 @@ void Game::displayInventory( ) {
     }
 }
 
+/* Game command methdos ( called from Game::Play() ) */
 void Game::takeCommand( std::vector<std::string> cmdLine ) {
     std::string targetItemName = cmdLine[1];
     std::vector<std::string> roomItems = curr_room->getItems();
@@ -409,11 +307,16 @@ void Game::openCommand( std::vector<std::string> cmdLine ) {
                 if(c->items.empty()) {
                     std::cout << c->getName() << " is empty." << '\n';
                 } else {
-                    std::cout << c->getName() <<" contains ";
-                    for(auto j : c->items) {
-                        std::cout << j << ", ";
+                    std::cout << c->getName() <<" contains: ";
+                    unsigned int l = c->items.size();
+                    for(auto i : c->items) {
+                        if(l == 1) {
+                            std::cout << i << '\n';
+                        } else {
+                            std::cout << i << ", ";
+                        }
+                        l -= 1;
                     }
-                    std::cout << std::endl;
                 }
                 c->open = true;
                 return;
@@ -427,11 +330,16 @@ void Game::openCommand( std::vector<std::string> cmdLine ) {
                 if(c->items.empty()) {
                     std::cout << c->getName() << " is empty." << '\n';
                 } else {
-                    std::cout << c->getName() <<" contains ";
-                    for(auto j : c->items) {
-                        std::cout << j << ", ";
+                    std::cout  << c->getName() <<" contains: ";
+                    unsigned int l = c->items.size();
+                    for(auto i : c->items) {
+                        if(l == 1) {
+                            std::cout << i << '\n';
+                        } else {
+                            std::cout << i << ", ";
+                        }
+                        l -= 1;
                     }
-                    std::cout << std::endl;
                 }
                 c->open = true;
                 return;
@@ -463,7 +371,7 @@ void Game::putCommand( std::vector<std::string> cmdLine ) {
     for(auto i : room_containers) {
         if(i == containerName) {
             room_has_container = true;
-            Container * targetContainer = getContainerByName(i);
+            targetContainer = getContainerByName(i);
         }
     }
     if(room_has_container == false) {
@@ -524,9 +432,6 @@ void Game::attackCommand( std::vector<std::string> cmdLine ) {
         std::cout << "The creature must be in the same room as you." << '\n';
         return;
     }
-
-    if(cToAttack == nullptr) std::cout << "err: creature must exist" << '\n'; /* TODO: rm */
-
     std::vector<std::string> cVulnerabilities = cToAttack->getVulnerabilities();
     for(auto v : cVulnerabilities) {
         if(v == itemName) {
@@ -550,7 +455,6 @@ void Game::attackCommand( std::vector<std::string> cmdLine ) {
         handleAction(a);
     }
 }
-
 void Game::readCommand( std::vector<std::string> cmdLine ) {
     std::string itemName = cmdLine[1];
     if(inventoryContains(itemName)) {
@@ -567,6 +471,12 @@ void Game::readCommand( std::vector<std::string> cmdLine ) {
         return;
     }
 }
+bool Game::moveCommand( std::string cmd ) {
+    for(auto i : this->movement_commands) {
+        if(i == cmd) return true;
+    }
+    return false;
+}
 void Game::changeRoom( std::string cmd ) {
     std::string dir = "";
     std::string rName = "";
@@ -582,14 +492,15 @@ void Game::changeRoom( std::string cmd ) {
         std::tie(dir, rName) = i;
         if(targetDir == dir) {
             curr_room = getRoomByName(rName);
-            std::cout << "Current room: "<< rName << '\n';
-            std::cout << "Description: " << curr_room->getDescription() << "\n";
+            std::cout  <<"Current room: " << rName << '\n';
+            std::cout  << "Description: " << curr_room->getDescription() << "\n";
             return;
         }
     }
     std::cout << "Cannot go that direction." << "\n";
 }
 
+/* Helper methods when looking for game components */
 Room * Game::getRoomByName( std::string roomName ) {
     for(auto i : this->rooms) {
         if(i->getName() == roomName) return i;
@@ -621,7 +532,40 @@ std::string Game::searchAllForType(std::string objName) {
     if(getItemByName(objName) != nullptr) return "item";
     return "NONE";
 }
+Component * Game::getGameComponent( std::string componentName ) {
+    for(auto i : this->rooms) {
+        if(i->getName() == componentName) return i;
+    }
+    for(auto i : this->items) {
+        if(i->getName() == componentName) return i;
+    }
+    for(auto i : this->containers) {
+        if(i->getName() == componentName) return i;
+    }
+    for(auto i : this->creatures) {
+        if(i->getName() == componentName) return i;
+    }
+    return nullptr;
+}
 
+//~~ Checking for triggers ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/******************************************************
+ * === PRELIM ===
+ * After a user enters a command, the prelim trig check
+ * is called that scans over all contextually related
+ * objects for triggers. This trig check looks for
+ * triggers that have a command attribute. If the
+ * command matches the user's command, and if the
+ * condition(s) is/are met, we add that trigger to a
+ * vector and process all triggers in that vector.
+ * === POST ===
+ * After the user's command is handled, the post trig
+ * check looks over all triggers in the current
+ * context and checks their conditions. Similarly, if
+ * conditions are met we add the trigger object to a
+ * vector and return that vector and process each
+ * trigger inside it.
+ *****************************************************/
 std::vector<Trigger *> Game::prelimTriggerCheck( std::vector<std::string> cmdLine ) {
     /* Get context */
     std::vector<std::string> curr_creatures = curr_room->getCreatures();
@@ -630,13 +574,12 @@ std::vector<Trigger *> Game::prelimTriggerCheck( std::vector<std::string> cmdLin
     curr_items.insert(curr_items.end(), inventory.begin(), inventory.end());
     std::vector<Trigger *> trigger_vector;
     std::vector<Trigger *> triggers_ready;
-    bool gotAtLeastOne = false;
     //std::cout << "prelimTriggerCheck(): begin" << '\n';
 
     /* Check creature triggers */
     if(!curr_creatures.empty()) {
         for(auto i : curr_creatures){
-            Creature * c = getCreatureByName(i);
+            Component * c = getGameComponent(i);
             if(c != nullptr) {
                 trigger_vector = c->getTriggers();
                 if(!trigger_vector.empty()) {
@@ -645,6 +588,7 @@ std::vector<Trigger *> Game::prelimTriggerCheck( std::vector<std::string> cmdLin
                             if(trigValid(j)) {
                                 if(checkConditions(j)) {
                                     triggers_ready.push_back(j);
+                                    j->incrTimesUsed();
                                 }
                             }
                         }
@@ -664,6 +608,7 @@ std::vector<Trigger *> Game::prelimTriggerCheck( std::vector<std::string> cmdLin
                 if(trigValid(j)) {
                     if(checkConditions(j)) {
                         triggers_ready.push_back(j);
+                        j->incrTimesUsed();
                     }
                 }
             }
@@ -674,7 +619,7 @@ std::vector<Trigger *> Game::prelimTriggerCheck( std::vector<std::string> cmdLin
     /* Check container triggers */
     if(!curr_containers.empty()) {
         for(auto i : curr_containers){
-            Container * c = getContainerByName(i);
+            Component * c = getGameComponent(i);
             if(c != nullptr) {
                 trigger_vector = c->getTriggers();
                 if(!trigger_vector.empty()) {
@@ -683,6 +628,7 @@ std::vector<Trigger *> Game::prelimTriggerCheck( std::vector<std::string> cmdLin
                             if(trigValid(j)) {
                                 if(checkConditions(j)) {
                                     triggers_ready.push_back(j);
+                                    j->incrTimesUsed();
                                 }
                             }
                         }
@@ -697,7 +643,7 @@ std::vector<Trigger *> Game::prelimTriggerCheck( std::vector<std::string> cmdLin
     /* Check item triggers */
     if(!curr_items.empty()) {
         for(auto i : curr_items) {
-            Item * it = getItemByName(i);
+            Component * it = getGameComponent(i);
             if(it != nullptr) {
                 trigger_vector = it->getTriggers();
                 if(!trigger_vector.empty()) {
@@ -706,6 +652,7 @@ std::vector<Trigger *> Game::prelimTriggerCheck( std::vector<std::string> cmdLin
                             if(trigValid(j)) {
                                 if(checkConditions(j)) {
                                     triggers_ready.push_back(j);
+                                    j->incrTimesUsed();
                                 }
                             }
                         }
@@ -720,14 +667,107 @@ std::vector<Trigger *> Game::prelimTriggerCheck( std::vector<std::string> cmdLin
 
     return triggers_ready;
 }
+std::vector<Trigger *> Game::postTriggerCheck( ) {
+    /* Get context */
+    std::vector<std::string> curr_creatures = curr_room->getCreatures();
+    std::vector<std::string> curr_containers = curr_room->getContainers();
+    std::vector<std::string> curr_items = curr_room->getItems();
+    curr_items.insert(curr_items.end(), inventory.begin(), inventory.end());
+    std::vector<Trigger *> trigger_vector;
+    std::vector<Trigger *> triggers_ready;
+    //std::cout << "postTriggerCheck(): begin" << '\n';
 
+    /* Check current room triggers */
+    trigger_vector = curr_room->getTriggers();
+    for(auto j : trigger_vector) {
+        if(j->getCommand() == "NONE") {
+            if(trigValid(j)) {
+                if(checkConditions(j)) {
+                    triggers_ready.push_back(j);
+                    j->incrTimesUsed();
+                }
+            }
+        }
+    }
+    //std::cout << "postTriggerCheck(): completed rooms" << '\n';
+
+    /* Check creature triggers */
+    if(!curr_creatures.empty()) {
+        for(auto i : curr_creatures) {
+            //Creature * c = getCreatureByName(i);
+            Component * c = getGameComponent(i);
+            if(c != nullptr) {
+                trigger_vector = c->getTriggers();
+                for(auto j : trigger_vector) {
+                    if(j->getCommand() == "NONE") {
+                        if(trigValid(j)) {
+                            if(checkConditions(j)) {
+                                triggers_ready.push_back(j);
+                                j->incrTimesUsed();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    //std::cout << "postTriggerCheck(): completed creatures" << '\n';
+
+    /* Check container triggers */
+    if(!curr_containers.empty()) {
+        for(auto i : curr_containers) {
+            //Container * c = getContainerByName(i);
+            Component * c = getGameComponent(i);
+            if(c != nullptr) {
+                trigger_vector = c->getTriggers();
+                for(auto j : trigger_vector) {
+                    if(j->getCommand() == "NONE") {
+                        if(trigValid(j)) {
+                            if(checkConditions(j)) {
+                                triggers_ready.push_back(j);
+                                j->incrTimesUsed();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    //std::cout << "postTriggerCheck(): completed containers" << '\n';
+
+    /* Check item triggers */
+    if(!curr_items.empty()) {
+        for(auto i : curr_items) {
+            //Item * it = getItemByName(i);
+            Component * it = getGameComponent(i);
+            if(it != nullptr) {
+                trigger_vector = it->getTriggers();
+                for(auto j : trigger_vector) {
+                    if(j->getCommand() == "NONE") {
+                        if(trigValid(j)) {
+                            if(checkConditions(j)) {
+                                triggers_ready.push_back(j);
+                                j->incrTimesUsed();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    //std::cout << "postTriggerCheck(): completed items" << '\n';
+
+    return triggers_ready;
+}
+
+/* Helper methods for trigger related tasks */
 bool Game::checkConditions(Trigger * t) {
     std::vector<Condition *> condition_vector = t->getConditions();
     if(condition_vector.empty()) return true;
     Component * baseComp = nullptr;
     std::string owner = "";
-    Container * c;
-    Item * o;
+    Container * c = nullptr;
+    Item * o = nullptr;
     for(auto k : condition_vector) {
         if(k->getStatus() != "NONE") {
             baseComp = getGameComponent(k->getObject());
@@ -807,50 +847,41 @@ bool Game::checkAttackCondition(Condition * cond) {
     }
     return false;
 }
-Component * Game::getGameComponent( std::string componentName ) {
-    for(auto i : this->rooms) {
-        if(i->getName() == componentName) return i;
+bool Game::trigValid(Trigger * t) {
+    //std::cout << "trigValid(t)" << '\n';
+    std::string mode = t->getMode();
+    int nTimesUsed = t->getTimesUsed();
+    if(mode == "unlimited" || mode == "permanent") {
+        return true;
     }
-    for(auto i : this->items) {
-        if(i->getName() == componentName) return i;
+    else if(nTimesUsed < 1) {
+        return true;
     }
-    for(auto i : this->containers) {
-        if(i->getName() == componentName) return i;
-    }
-    for(auto i : this->creatures) {
-        if(i->getName() == componentName) return i;
-    }
-    return nullptr;
+    return false;
 }
 void Game::handleTrigger(Trigger * t) {
+    //std::cout << "handleTrigger(t)" << '\n';
     std::cout << t->getPrint() << '\n';
     std::vector<std::string> triggerActionSplitted;
     if(t->getCommand() == "NONE") return;
     triggerActionSplitted = splitString(t->getCommand(), " ");
     std::string cmd = "";
     if(triggerActionSplitted[0] == "Update") { /* Update status of object */
-        std::string itemType = searchAllForType(triggerActionSplitted[1]);
-        if(itemType == "room") {
-            Room * x = getRoomByName(triggerActionSplitted[1]);
-            x->setStatus(triggerActionSplitted[3]);
-        }
-        else if(itemType == "item") {
-            Item * x = getItemByName(triggerActionSplitted[1]);
-            x->setStatus(triggerActionSplitted[3]);
-        }
-        else if(itemType == "container") {
-            Container * x = getContainerByName(triggerActionSplitted[1]);
-            x->setStatus(triggerActionSplitted[3]);
-        }
-        else if(itemType == "creature") {
-            Creature * x = getCreatureByName(triggerActionSplitted[1]);
-            x->setStatus(triggerActionSplitted[3]);
-        }
+        Component * baseComp = getGameComponent(triggerActionSplitted[1]);
+        baseComp->setStatus(triggerActionSplitted[3]);
 
     } else if(triggerActionSplitted[0] == "Add") {
-        /* TODO: Add action */
-        std::cout<<"Add "<<triggerActionSplitted[1] <<" to "<< triggerActionSplitted[3]<<'\n';
-
+        Room * targetRoom = getRoomByName(triggerActionSplitted[3]);
+        Container * targetContainer = getContainerByName(triggerActionSplitted[3]);
+        if(targetRoom) {
+            Item * newItem = getItemByName(triggerActionSplitted[1]);
+            newItem->setOwner(targetRoom->getName());
+            targetRoom->addItem(newItem->getName());
+        } else if(targetContainer) {
+            Item * newItem = getItemByName(triggerActionSplitted[1]);
+            newItem->setOwner(targetContainer->getName());
+            targetContainer->addItem(newItem->getName());
+        }
     } else if(triggerActionSplitted[0] == "Delete") {
         //Removes that object from the current room
         std::string delObjectType = searchAllForType(triggerActionSplitted[1]);
@@ -863,28 +894,35 @@ void Game::handleTrigger(Trigger * t) {
         else if (delObjectType == "item"){
             curr_room->removeItem(triggerActionSplitted[1]);
         }
-        std::cout << "Delete "<<triggerActionSplitted[1] <<" from game." << '\n';
     }
 }
 void Game::handleAction( std::string actionStr ) {
     std::vector<std::string> actionSplitted = splitString(actionStr, " ");
     if(actionSplitted[0] == "Update") { /* Update status of object */
-        Component * baseComp = getGameComponent(actionSplitted[1]);
-        baseComp->setStatus(actionSplitted[3]);
+        std::string objType = searchAllForType(actionSplitted[1]);
+        if(objType == "room") {
+            Room * r = getRoomByName(actionSplitted[1]);
+            r->setStatus(actionSplitted[3]);
+        } else if(objType == "item") {
+            Item * i = getItemByName(actionSplitted[1]);
+            i->setStatus(actionSplitted[3]);
+        } else if(objType == "creature") {
+            Creature * c = getCreatureByName(actionSplitted[1]);
+            c->setStatus(actionSplitted[3]);
+        } else if(objType == "container") {
+            Container * cn = getContainerByName(actionSplitted[1]);
+            cn->setStatus(actionSplitted[3]);
+        }
 
     } else if(actionSplitted[0] == "Add") {
         Room * targetRoom = getRoomByName(actionSplitted[3]);
         Container * targetContainer = getContainerByName(actionSplitted[3]);
         if(targetRoom) {
-            Item * newItem = new Item();
-            newItem->setName(actionSplitted[1]);
-            this->items.push_back(newItem);
+            Item * newItem = getItemByName(actionSplitted[1]);
             newItem->setOwner(targetRoom->getName());
             targetRoom->addItem(newItem->getName());
         } else if(targetContainer) {
-            Item * newItem = new Item();
-            newItem->setName(actionSplitted[1]);
-            this->items.push_back(newItem);
+            Item * newItem = getItemByName(actionSplitted[1]);
             newItem->setOwner(targetContainer->getName());
             targetContainer->addItem(newItem->getName());
         }
@@ -901,12 +939,16 @@ void Game::handleAction( std::string actionStr ) {
         else if (delObjectType == "item"){
             curr_room->removeItem(actionSplitted[1]);
         }
-        std::cout << "Delete "<<actionSplitted[1] <<" from game." << '\n';
-    }
-    else{/* TODO: Execute Command */
     }
 }
 
+/* Utilities */
+bool Game::checkInput( std::string userInput ) {
+    for(auto i : this->game_commands) {
+        if(i == userInput) return true;
+    }
+    return false;
+}
 std::vector<std::string> Game::splitString(const std::string s, const std::string delim) {
     std::vector<std::string> splitted;
     size_t prev=0, pos=0;

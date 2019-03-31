@@ -1,11 +1,15 @@
 #ifndef TRIGGER_H
 #define TRIGGER_H
-#include <iostream>
-#include <vector>
-#include <string>
 #include "Condition.h"
 #include "tinyxml2.h"
+#include <iostream>
+#include <fstream>
+#include <iterator>
+#include <vector>
+#include <tuple>
+#include <string>
 using namespace tinyxml2;
+
 
 class Trigger {
 public:

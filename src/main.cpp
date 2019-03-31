@@ -1,29 +1,29 @@
-#include <iostream>
-#include <string>
-#include <vector>
-#include <fstream>
-#include "Trigger.h"
-#include "Creature.h"
 #include "Component.h"
-#include "Game.h"
-#include "Room.h"
+#include "Creature.h"
+#include "Condition.h"
 #include "Container.h"
+#include "Game.h"
 #include "Item.h"
+#include "Room.h"
+#include "Trigger.h"
 #include "tinyxml2.h"
+#include <iostream>
+#include <fstream>
+#include <iterator>
+#include <vector>
+#include <tuple>
+#include <string>
 using namespace tinyxml2;
+
 
 // Main entrypoint
 int main(void) {
     /* GAME SETUP */
-    Game * game = new Game("test.xml"); // Construct game
-    //game->ShowObjects( ); // Show game components
+    Game * game = new Game("test.xml");
+    //game->ShowObjects( );
 
     /* RUN GAME */
-    game->Play( ); // Play the game!
-    // Prompt for command
-    // |-> If (trigger) --> Execute (trigger)
-    // |-> Else --> Execute (command)
-    //      |--> If (trigger) --> Execute (trigger)
+    game->Play( );
 
     /* EXIT */
     return EXIT_SUCCESS;

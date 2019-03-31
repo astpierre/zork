@@ -1,13 +1,18 @@
 #ifndef CREATURE_H
 #define CREATURE_H
-#include <iostream>
-#include <vector>
-#include <string>
+
 #include "Component.h"
 #include "Condition.h"
-#include "Attack.h"
+#include "Trigger.h"
 #include "tinyxml2.h"
+#include <iostream>
+#include <fstream>
+#include <iterator>
+#include <vector>
+#include <tuple>
+#include <string>
 using namespace tinyxml2;
+
 
 class Creature: public Component {
 public:
