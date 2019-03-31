@@ -432,9 +432,7 @@ void Game::attackCommand( std::vector<std::string> cmdLine ) {
         std::cout << "The creature must be in the same room as you." << '\n';
         return;
     }
-
-    if(cToAttack == nullptr) std::cout << "err: creature null?" << '\n'; /* TODO: rm */
-
+    
     std::vector<std::string> cVulnerabilities = cToAttack->getVulnerabilities();
     for(auto v : cVulnerabilities) {
         if(v == itemName) {
