@@ -525,7 +525,7 @@ void Game::attackCommand( std::vector<std::string> cmdLine ) {
         return;
     }
 
-    if(cToAttack == nullptr) std::cout << "err: creature null?" << '\n'; /* TODO: rm */
+    if(cToAttack == nullptr) std::cout << "err: creature must exist" << '\n'; /* TODO: rm */
 
     std::vector<std::string> cVulnerabilities = cToAttack->getVulnerabilities();
     for(auto v : cVulnerabilities) {
