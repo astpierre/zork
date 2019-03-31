@@ -1,9 +1,14 @@
 #include "Condition.h"
-#include <iostream>
-#include <string>
 #include "tinyxml2.h"
+#include <iostream>
+#include <fstream>
+#include <iterator>
+#include <vector>
+#include <tuple>
+#include <string>
 using namespace tinyxml2;
 
+/* Constructor/Destructor for Condition */
 Condition::Condition( XMLElement * ConditionElement ) {
     if(ConditionElement->FirstChildElement("status") != nullptr) {
         this->status = ConditionElement->FirstChildElement("status")->GetText();
@@ -24,25 +29,18 @@ Condition::Condition( XMLElement * ConditionElement ) {
 
 Condition::~Condition( ) { }
 
+/* Setter/Getter for "Has" attribute */
 void Condition::setHas( std::string h ) { has = h; }
 std::string Condition::getHas( ) {  return has;  }
 
+/* Setter/Getter for owner attribute */
 void Condition::setOwner( std::string o ) { owner = o; }
 std::string Condition::getOwner( ) {  return owner;  }
 
+/* Setter/Getter for object condtion is bound to */
 void Condition::setObject( std::string o ) {  object = o;  }
 std::string Condition::getObject( ) {  return object;  }
 
+/* Setter/Getter for status of object condition is bound to */
 void Condition::setStatus( std::string s ) {  status = s;  }
 std::string Condition::getStatus( ) {  return status;  }
-
-bool Condition::satisfies( std::string h, std::string obj, std::string own ) {
-    if(this->has == h) {
-        if(this->object == obj) {
-            if(this->owner == own) {
-                return true;
-            }
-        }
-    }
-    return false;
-}

@@ -1,13 +1,17 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include <tuple>
-#include "Component.h"
 #include "Room.h"
+#include "Component.h"
+#include "Condition.h"
 #include "Trigger.h"
 #include "tinyxml2.h"
+#include <iostream>
+#include <fstream>
+#include <iterator>
+#include <vector>
+#include <tuple>
+#include <string>
 using namespace tinyxml2;
 
+/* Constructor/Destructor for Room */
 Room::Room( XMLElement * roomElement ) {
     /* Room name, status, description, type */
     if(roomElement->FirstChildElement("name") != nullptr) {
@@ -75,6 +79,7 @@ Room::Room( XMLElement * roomElement ) {
 
 Room::~Room( ) { }
 
+/* Setter/Getter for Items */
 void Room::addItem( std::string item ) {
     this->items.push_back(item);
 }
@@ -85,7 +90,11 @@ void Room::removeItem( std::string item ) {
         }
     }
 }
+std::vector<std::string> Room::getItems( ) {
+    return this->items;
+}
 
+/* Setter/Getter for room type */
 void Room::setType( std::string type ) {
     this->roomType = type;
 }
@@ -93,6 +102,7 @@ std::string Room::getType( ) {
     return this->roomType;
 }
 
+/* Setter/Getter for Containers */
 void Room::addContainer( std::string container ) {
     this->containers.push_back(container);
 }
@@ -103,7 +113,11 @@ void Room::removeContainer( std::string container ) {
         }
     }
 }
+std::vector<std::string> Room::getContainers( ) {
+    return this->containers;
+}
 
+/* Setter/Getter for Creatures */
 void Room::addCreature( std::string creature ) {
     this->creatures.push_back(creature);
 }
@@ -114,20 +128,14 @@ void Room::removeCreature( std::string creature ) {
         }
     }
 }
-
-std::vector<std::string> Room::getItems( ) {
-    return this->items;
-}
-std::vector<std::string> Room::getContainers( ) {
-    return this->containers;
-}
 std::vector<std::string> Room::getCreatures( ) {
     return this->creatures;
 }
+
+/* Setter/Getter + Methods for room borders */
 std::vector<std::tuple<std::string, std::string>> Room::getBorders( ) {
     return this->borders;
 }
-
 void Room::showBorders( ) {
     std::string dir = "";
     std::string rName = "";
@@ -136,7 +144,6 @@ void Room::showBorders( ) {
         std::cout << "Bordering room: " << rName << " | In direction:" << dir << '\n';
     }
 }
-
 void Room::addBorder( std::string dir, std::string name ) {
     std::tuple<std::string, std::string> newBorder = std::make_tuple(dir, name);
     this->borders.push_back(newBorder);

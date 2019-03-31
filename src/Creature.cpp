@@ -1,10 +1,17 @@
 #include "Creature.h"
+#include "Component.h"
+#include "Condition.h"
 #include "Trigger.h"
 #include "tinyxml2.h"
 #include <iostream>
+#include <fstream>
+#include <iterator>
+#include <vector>
+#include <tuple>
 #include <string>
 using namespace tinyxml2;
 
+/* Constructor/Destructor for Creature */
 Creature::Creature( XMLElement * creatureElement ) {
     /* Creature name */
     if(creatureElement->FirstChildElement("name") != nullptr) {
@@ -58,6 +65,7 @@ Creature::Creature( XMLElement * creatureElement ) {
 
 Creature::~Creature( ) { }
 
+/* Setter/Getter for Vulnerabilities */
 void Creature::addVulnerability( std::string vul ) {
     this->vulnerabilities.push_back(vul);
 }
@@ -70,15 +78,17 @@ bool Creature::hasVulnerability( std::string vul ) {
 std::vector<std::string> Creature::getVulnerabilities( ) {
     return this->vulnerabilities;
 }
-std::string Creature::getAttackPrint(){
-    return this->attackPrint;
+
+/* Setter/Getter + Methods for Attack related tasks */
+void Creature::addAttackAction( std::string action ) {
+    this->attackActions.push_back(action);
 }
 std::vector<std::string> Creature::getAttackActions( ) {
     return this->attackActions;
 }
+std::string Creature::getAttackPrint(){
+    return this->attackPrint;
+}
 std::vector<Condition *> Creature::getAttackConditions( ) {
     return this->attackConditions;
-}
-void Creature::addAttackAction( std::string action ) {
-    this->attackActions.push_back(action);
 }

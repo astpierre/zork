@@ -4,8 +4,19 @@
 #ifndef ZORK_CONTAINER_H
 #define ZORK_CONTAINER_H
 #include "Component.h"
+#include "Condition.h"
 #include "Item.h"
+#include "Trigger.h"
+#include "tinyxml2.h"
+#include <iostream>
+#include <fstream>
+#include <iterator>
 #include <vector>
+#include <tuple>
+#include <string>
+using namespace tinyxml2;
+
+
 class Container : public Component{
 public:
     Container( XMLElement * );
