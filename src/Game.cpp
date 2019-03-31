@@ -852,7 +852,17 @@ void Game::handleTrigger(Trigger * t) {
         std::cout<<"Add "<<triggerActionSplitted[1] <<" to "<< triggerActionSplitted[3]<<'\n';
 
     } else if(triggerActionSplitted[0] == "Delete") {
-        /* TODO: Delete action */
+        //Removes that object from the current room
+        std::string delObjectType = searchAllForType(triggerActionSplitted[1]);
+        if(delObjectType == "creature") {
+            curr_room->removeCreature(triggerActionSplitted[1]);
+        }
+        else if (delObjectType == "container"){
+            curr_room->removeContainer(triggerActionSplitted[1]);
+        }
+        else if (delObjectType == "item"){
+            curr_room->removeItem(triggerActionSplitted[1]);
+        }
         std::cout << "Delete "<<triggerActionSplitted[1] <<" from game." << '\n';
     }
 }
@@ -880,8 +890,20 @@ void Game::handleAction( std::string actionStr ) {
         }
 
     } else if(actionSplitted[0] == "Delete") {
-        /* TODO: Delete action */
+        //Identifies type and removes that object from the current room
+        std::string delObjectType = searchAllForType(actionSplitted[1]);
+        if(delObjectType == "creature") {
+            curr_room->removeCreature(actionSplitted[1]);
+        }
+        else if (delObjectType == "container"){
+            curr_room->removeContainer(actionSplitted[1]);
+        }
+        else if (delObjectType == "item"){
+            curr_room->removeItem(actionSplitted[1]);
+        }
         std::cout << "Delete "<<actionSplitted[1] <<" from game." << '\n';
+    }
+    else{/* TODO: Execute Command */
     }
 }
 
