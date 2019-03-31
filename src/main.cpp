@@ -15,15 +15,11 @@ using namespace tinyxml2;
 // Main entrypoint
 int main(void) {
     /* GAME SETUP */
-    Game * game = new Game("test.xml"); // Construct game
-    //game->ShowObjects( ); // Show game components
+    Game * game = new Game("test.xml");
+    //game->ShowObjects( );
 
     /* RUN GAME */
-    game->Play( ); // Play the game!
-    // Prompt for command
-    // |-> If (trigger) --> Execute (trigger)
-    // |-> Else --> Execute (command)
-    //      |--> If (trigger) --> Execute (trigger)
+    game->Play( );
 
     /* EXIT */
     return EXIT_SUCCESS;
