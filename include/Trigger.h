@@ -28,9 +28,12 @@ public:
     virtual void changeMode( std::string );
     virtual void incrTimesUsed( );
     std::vector<Condition *> getConditions( );
+    virtual std::string getAction(void);
+    virtual void setAction(std::string);
 
 
 private:
+    std::string action = "";
     std::string command = "";
     std::string print = "";
     std::string mode = "single"; // Default
