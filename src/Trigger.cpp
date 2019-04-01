@@ -27,7 +27,11 @@ Trigger::Trigger( XMLElement * triggerElement ) {
     } else {
         setCommand("NONE");
     }
-
+    if(triggerElement->FirstChildElement("action") != nullptr) {
+        setAction(triggerElement->FirstChildElement("action")->GetText());
+    } else {
+        setAction("NONE");
+    }
     /* Conditions */
     XMLElement * pCondition = nullptr;
     pCondition = triggerElement->FirstChildElement("condition");
@@ -60,6 +64,13 @@ std::string Trigger::getPrint( void ) {  return print;  }
 void Trigger::setReady( bool value ) {
     ready = value;
     return;
+}
+void Trigger::setAction(std::string act) {
+    this->action = act;
+    return;
+}
+std::string Trigger::getAction() {
+    return action;
 }
 bool Trigger::getReadyStatus( void ) {  return ready;  }
 

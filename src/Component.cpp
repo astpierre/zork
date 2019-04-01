@@ -49,6 +49,8 @@ void Component::showTriggers( ) {
     for(auto i : triggers) {
         std::cout << "Trigger type: "<< i->getMode() << std::endl;
         std::cout << "Trigger print: "<< i->getPrint() << std::endl;
+        std::cout << "Trigger command: "<< i->getCommand() << std::endl;
+        std::cout << "Trigger action: "<< i->getAction() << std::endl;
     }
     return;
 }

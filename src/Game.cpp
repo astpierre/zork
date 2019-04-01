@@ -863,8 +863,8 @@ void Game::handleTrigger(Trigger * t) {
     //std::cout << "handleTrigger(t)" << '\n';
     std::cout << t->getPrint() << '\n';
     std::vector<std::string> triggerActionSplitted;
-    if(t->getCommand() == "NONE") return;
-    triggerActionSplitted = splitString(t->getCommand(), " ");
+    if(t->getAction() == "NONE") return;
+    triggerActionSplitted = splitString(t->getAction(), " ");
     std::string cmd = "";
     if(triggerActionSplitted[0] == "Update") { /* Update status of object */
         Component * baseComp = getGameComponent(triggerActionSplitted[1]);
@@ -940,6 +940,10 @@ void Game::handleAction( std::string actionStr ) {
             curr_room->removeItem(actionSplitted[1]);
         }
     }
+    else if(moveCommand(actionSplitted[0])) { /* Attempt to change room */
+            changeRoom(actionSplitted[0]);
+    }
+
 }
 
 /* Utilities */
