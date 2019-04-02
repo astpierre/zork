@@ -19,7 +19,7 @@ using namespace tinyxml2;
 // Main entrypoint
 int main(void) {
     /* GAME SETUP */
-    Game * game = new Game("test.xml");
+    Game * game = new Game("triggersample.xml");
     //game->ShowObjects( );
 
     /* RUN GAME */
