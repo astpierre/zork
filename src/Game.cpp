@@ -24,7 +24,6 @@ Game::Game( const char * xmlfile ) { /* Constructor */
 
     /* Parse XML file */
     XMLNode * pRoot = doc.FirstChildElement("map"); // pRoot == <map>
-
     //~~ Populate all objects ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     /******************************************************
      * For Rooms, Items, Containers, and Creatures, add
