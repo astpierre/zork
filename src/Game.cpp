@@ -161,9 +161,13 @@ void Game::Play( ) { /* Called afer constructing the game */
                     takeCommand(userInputSplitted);
 
                 } else if(cmd == "open" && userInputSplitted[1] == "exit") { /* Attempt to exit game. */
-                    std::cout << "Game Over\n"; /* TODO: only exit if room type = 'exit' */
-                    game_over = true;
+                    if(curr_room->getType() == "exit") {
+                        std::cout << "Game Over\n"; /* TODO: only exit if room type = 'exit' */
 
+                        game_over = true;
+                    } else {
+                        std::cout << "Err: room not of type 'exit'" << '\n';
+                    }
                 } else if(cmd == "open") { /* Attempt to open a container. */
                     openCommand(userInputSplitted);
 
@@ -261,39 +265,33 @@ void Game::takeCommand( std::vector<std::string> cmdLine ) {
     }
     for(auto i : roomContainers) {
         containerToCheck = getContainerByName(i);
-        if(containerToCheck->open) {
-            if(containerToCheck->acceptAll) {
-                if(containerToCheck->containerContains(targetItemName)) {
+        if(containerToCheck->containerContains(targetItemName)) {
+            if(containerToCheck->open == true) {
+                if(containerToCheck->acceptAll) {
                     targetItem = getItemByName(targetItemName);
                     targetItem->setOwner("inventory");
                     containerToCheck->removeItem(targetItemName);
                     addToInventory(targetItemName);
                     std::cout << "Added "<< targetItemName << " to inventory." << '\n';
                     return;
-                }
-            } else {
-                for(auto j : containerToCheck->accept) {
-                    if(containerToCheck->containerContains(j)) {
-                        for(auto k : containerToCheck->items) {
-                            if(k == targetItemName) {
-                                targetItem = getItemByName(targetItemName);
-                                targetItem->setOwner("inventory");
-                                containerToCheck->removeItem(targetItemName);
-                                addToInventory(targetItemName);
-                                std::cout << "Added "<< targetItemName << " to inventory." << '\n';
-                                return;
-                            }
+                } else {
+                    for(auto j : containerToCheck->accept) {
+                        if(containerToCheck->containerContains(j)) {
+                            targetItem = getItemByName(targetItemName);
+                            targetItem->setOwner("inventory");
+                            containerToCheck->removeItem(targetItemName);
+                            addToInventory(targetItemName);
+                            std::cout << "Added "<< targetItemName << " to inventory." << '\n';
+                            return;
                         }
                     }
                 }
             }
-        } else {
-            std::cout << "Could not add "<<targetItemName<<" to your inventory." << '\n';
-            std::cout << "Container must be open to take items from it..." << '\n';
-            return;
         }
     }
     std::cout << "Could not add "<<targetItemName<<" to your inventory." << '\n';
+    std::cout << "Container must be open to take items from it..." << '\n';
+    return;
 }
 void Game::openCommand( std::vector<std::string> cmdLine ) {
     std::string targetContainerName = cmdLine[1];
@@ -302,23 +300,25 @@ void Game::openCommand( std::vector<std::string> cmdLine ) {
     for(auto i : roomContainers) {
         if(i == targetContainerName) {
             Container * c = getContainerByName(i);
-            if(c->acceptAll) {
-                if(c->items.empty()) {
-                    std::cout << c->getName() << " is empty." << '\n';
-                } else {
-                    std::cout << c->getName() <<" contains: ";
-                    unsigned int l = c->items.size();
-                    for(auto i : c->items) {
-                        if(l == 1) {
-                            std::cout << i << '\n';
-                        } else {
-                            std::cout << i << ", ";
-                        }
-                        l -= 1;
-                    }
-                }
+            if(c != nullptr) {
                 c->open = true;
-                return;
+                if(c->acceptAll) {
+                    if(c->items.empty()) {
+                        std::cout << c->getName() << " is empty." << '\n';
+                    } else {
+                        std::cout << c->getName() <<" contains: ";
+                        unsigned int l = c->items.size();
+                        for(auto i : c->items) {
+                            if(l == 1) {
+                                std::cout << i << '\n';
+                            } else {
+                                std::cout << i << ", ";
+                            }
+                            l -= 1;
+                        }
+                    }
+
+                    return;
             } else {
                 for(auto k : c->accept) {
                     if(!c->containerContains(k)) {
@@ -346,6 +346,7 @@ void Game::openCommand( std::vector<std::string> cmdLine ) {
             }
         }
     }
+}
 }
 void Game::dropCommand( std::vector<std::string> cmdLine ) {
     std::string itemName = cmdLine[1];
@@ -518,6 +519,7 @@ Container * Game::getContainerByName( std::string containerName ) {
     }
     return nullptr;
 }
+
 Creature * Game::getCreatureByName( std::string creatureName ) {
     for(auto i : this->creatures) {
         if(i->getName() == creatureName) return i;
@@ -941,6 +943,8 @@ void Game::handleAction( std::string actionStr ) {
     }
     else if(moveCommand(actionSplitted[0])) { /* Attempt to change room */
             changeRoom(actionSplitted[0]);
+    } else if(actionSplitted[0] == "drop") {
+        dropCommand(actionSplitted);
     }
 
 }
